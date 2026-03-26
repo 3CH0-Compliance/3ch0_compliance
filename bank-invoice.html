@@ -219,13 +219,10 @@
     footer a:hover { color: var(--accent); }
 
     @media (max-width: 600px) {
-      nav { padding: 12px 20px; }
-      .logo-img { height: 40px; }
-      nav .nav-links { gap: 20px; }
-      nav a { font-size: 13px; }
+      nav { padding: 14px 20px; }
       main { padding: 100px 16px 60px; }
+      .form-card { padding: 28px 20px; }
       .page-header h1 { font-size: 24px; }
-      .form-card { padding: 28px 20px; border-radius: 16px; }
     }
   </style>
 </head>
@@ -234,38 +231,37 @@
     <div><img src="3CH0_logo_transparent_fixed.png" alt="3CH0 Logo" class="logo-img"></div>
     <div class="nav-links">
       <a href="home.html">Home</a>
+      <a href="compliance_dashboard.html">Dashboard</a>
       <a href="subscription.html">Subscription</a>
       <a href="settings.html">Settings</a>
     </div>
   </nav>
 
   <main>
-    <a href="checkout-agency.html" class="back-link">← Back to checkout</a>
+    <a href="checkout-agency.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to plans
+    </a>
 
     <div class="page-header">
       <div class="icon">🏦</div>
       <h1>Request Bank Invoice</h1>
-      <p>Fill in your details below and we'll send you a bank invoice within 24 hours</p>
+      <p>We'll send you a professional invoice for bank transfer payment.</p>
     </div>
 
-    <div style="text-align: center;">
-      <div class="plan-badge">
-        <span>Agency Pro</span>
-        <span>•</span>
-        <span id="plan-type">Annual Plan</span>
-        <span>•</span>
-        <span class="price" id="plan-price">$948</span>
-      </div>
+    <div class="plan-badge">
+      <span id="plan-type">Agency Pro - Monthly</span>
+      <span class="price" id="plan-price">R1 899</span>
     </div>
 
     <div class="form-card" id="form-card">
-      <h2>Your Details</h2>
-      <div class="status-message" id="status-message"></div>
-
+      <div id="status-message" class="status-message"></div>
+      
+      <h2>Invoice Details</h2>
       <form id="invoice-request-form">
         <div class="form-group">
-          <label for="email">Email Address <span class="required">*</span></label>
-          <input type="email" id="email" name="email" placeholder="you@company.com" required autocomplete="email">
+          <label for="email">Business Email <span class="required">*</span></label>
+          <input type="email" id="email" name="email" placeholder="accounts@company.co.za" required>
         </div>
 
         <div class="form-group">
@@ -306,7 +302,7 @@
   </main>
 
   <footer>
-    © 2025 3CH0 Compliance. All rights reserved.
+    © 3CH0 Compliance. All rights reserved.
     <br>
     <a href="settings.html">Privacy & Terms</a>
     <a href="mailto:support@3ch0.com">Support</a>
@@ -319,57 +315,104 @@
     // ============================================
     const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/1uatntmkvmo8rsn9nj0mq7l7q5ozkcl6';
     
+    // ============================================
+    // PRICING CONFIG - All plans, all currencies
+    // ============================================
     const PRICE_CONFIG = {
-      USD: { annual: 948, monthly: 99, symbol: '$' },
-      EUR: { annual: 828, monthly: 89, symbol: '€' },
-      GBP: { annual: 708, monthly: 79, symbol: '£' },
-      ZAR: { annual: 13200, monthly: 1899, symbol: 'R' }
+      USD: {
+        'agency-pro': { monthly: 99.00, annual: 988.00 },
+        symbol: '$'
+      },
+      EUR: {
+        'agency-pro': { monthly: 89.00, annual: 888.00 },
+        symbol: '€'
+      },
+      GBP: {
+        'agency-pro': { monthly: 79.00, annual: 788.00 },
+        symbol: '£'
+      },
+      ZAR: {
+        'starter': { monthly: 799.00, annual: 7990.00 },
+        'agency-pro': { monthly: 1899.00, annual: 18990.00 },
+        'enterprise': { monthly: 4990.00, annual: 49900.00 },
+        symbol: 'R'
+      }
     };
 
-    let currentPlan = 'annual';
-    let currentCurrency = 'USD';
+    const PLAN_NAMES = {
+      'starter': 'Starter',
+      'agency-pro': 'Agency Pro',
+      'enterprise': 'Enterprise'
+    };
+
+    let currentPlan = 'agency-pro';
+    let currentBilling = 'monthly';
+    let currentCurrency = 'ZAR';
 
     // ============================================
     // INIT
     // ============================================
     document.addEventListener('DOMContentLoaded', function() {
       initializePlanInfo();
-      
-      // Form submission
       document.getElementById('invoice-request-form').addEventListener('submit', handleFormSubmit);
     });
 
     function initializePlanInfo() {
+      // Get plan and billing from URL parameters
       const params = new URLSearchParams(window.location.search);
-      currentPlan = params.get('plan') || localStorage.getItem('selectedPlan') || 'annual';
+      currentPlan = params.get('plan') || 'agency-pro';
+      currentBilling = params.get('billing') || 'monthly';
       
-      const savedCountry = localStorage.getItem('userCountry') || 'US';
-      const savedCurrency = localStorage.getItem('userCurrency') || 'USD';
+      // Detect currency from localStorage
+      const savedCountry = localStorage.getItem('userCountry') || 'ZA';
+      const savedCurrency = localStorage.getItem('userCurrency') || 'ZAR';
       
       const euroCountries = ['DE','FR','IT','ES','NL','BE','IE','PT','AT'];
-      if (euroCountries.includes(savedCountry)) {
-        currentCurrency = 'EUR';
-      } else if (savedCountry === 'GB') {
-        currentCurrency = 'GBP';
-      } else if (savedCountry === 'ZA') {
+      if (savedCountry === 'ZA' || savedCurrency === 'ZAR') {
         currentCurrency = 'ZAR';
+      } else if (euroCountries.includes(savedCountry) || savedCurrency === 'EUR') {
+        currentCurrency = 'EUR';
+      } else if (savedCountry === 'GB' || savedCurrency === 'GBP') {
+        currentCurrency = 'GBP';
       } else {
-        currentCurrency = savedCurrency;
+        currentCurrency = 'USD';
       }
 
+      console.log('Bank Invoice loaded:', { currentPlan, currentBilling, currentCurrency });
       updatePlanDisplay();
     }
 
-    function updatePlanDisplay() {
-      const config = PRICE_CONFIG[currentCurrency] || PRICE_CONFIG.USD;
-      const amount = config[currentPlan];
-      const planLabel = currentPlan === 'annual' ? 'Annual Plan' : 'Monthly Plan';
-      
-      let formattedPrice = currentCurrency === 'ZAR' 
-        ? `${config.symbol}${amount.toLocaleString()}`
-        : `${config.symbol}${amount.toFixed(2)}`;
+    function formatZARPrice(amount) {
+      return amount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    }
 
-      document.getElementById('plan-type').textContent = planLabel;
+    function updatePlanDisplay() {
+      const config = PRICE_CONFIG[currentCurrency];
+      if (!config) {
+        console.error('No config for currency:', currentCurrency);
+        return;
+      }
+
+      const planConfig = config[currentPlan];
+      if (!planConfig) {
+        console.error('No plan config for:', currentPlan, 'in currency:', currentCurrency);
+        // Fallback to agency-pro
+        currentPlan = 'agency-pro';
+        return updatePlanDisplay();
+      }
+
+      const amount = currentBilling === 'annual' ? planConfig.annual : planConfig.monthly;
+      const planName = PLAN_NAMES[currentPlan] || 'Agency Pro';
+      const billingLabel = currentBilling === 'annual' ? 'Annual' : 'Monthly';
+      
+      let formattedPrice;
+      if (currentCurrency === 'ZAR') {
+        formattedPrice = `${config.symbol}${formatZARPrice(amount)}`;
+      } else {
+        formattedPrice = `${config.symbol}${amount.toFixed(2)}`;
+      }
+
+      document.getElementById('plan-type').textContent = `${planName} - ${billingLabel}`;
       document.getElementById('plan-price').textContent = formattedPrice;
     }
 
@@ -399,17 +442,25 @@
       submitBtn.textContent = 'Sending...';
 
       // Build invoice data
-      const config = PRICE_CONFIG[currentCurrency] || PRICE_CONFIG.USD;
-      const amount = config[currentPlan];
-      const formattedAmount = currentCurrency === 'ZAR' 
-        ? `${config.symbol}${amount.toLocaleString()}`
-        : `${config.symbol}${amount.toFixed(2)}`;
+      const config = PRICE_CONFIG[currentCurrency];
+      const planConfig = config[currentPlan];
+      const amount = currentBilling === 'annual' ? planConfig.annual : planConfig.monthly;
+      
+      let formattedAmount;
+      if (currentCurrency === 'ZAR') {
+        formattedAmount = `${config.symbol}${formatZARPrice(amount)}`;
+      } else {
+        formattedAmount = `${config.symbol}${amount.toFixed(2)}`;
+      }
 
       const now = new Date();
       const invoiceNumber = `INV-${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}-${Math.floor(1000 + Math.random() * 9000)}`;
       
       const dueDate = new Date(now);
       dueDate.setDate(now.getDate() + 14);
+
+      const planName = PLAN_NAMES[currentPlan] || 'Agency Pro';
+      const savingsNote = currentBilling === 'annual' ? ' - Save 17%' : '';
 
       // THE DATA THAT GOES TO MAKE
       const invoiceData = {
@@ -421,15 +472,13 @@
         invoice_number: invoiceNumber,
         invoice_date: now.toISOString().split('T')[0],
         due_date: dueDate.toISOString().split('T')[0],
-        plan_name: 'Agency Pro',
-        plan_type: currentPlan,
-        plan_period: currentPlan === 'annual' ? '1 Year' : '1 Month',
+        plan_name: planName,
+        plan_type: currentBilling,
+        plan_period: currentBilling === 'annual' ? '1 Year' : '1 Month',
         currency: currentCurrency,
         amount: amount,
         formatted_amount: formattedAmount,
-        description: currentPlan === 'annual' 
-          ? 'Agency Pro Compliance Subscription (Annual) - Save 20%' 
-          : 'Agency Pro Compliance Subscription (Monthly)',
+        description: `${planName} Compliance Subscription (${currentBilling === 'annual' ? 'Annual' : 'Monthly'})${savingsNote}`,
         timestamp: now.toISOString(),
         source: 'checkout-bank-invoice'
       };
@@ -438,21 +487,18 @@
 
       // SEND TO MAKE WEBHOOK
       try {
-        // Use XMLHttpRequest for better compatibility
         const xhr = new XMLHttpRequest();
         xhr.open('POST', MAKE_WEBHOOK_URL, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         
         xhr.onload = function() {
           console.log('✅ Response:', xhr.status, xhr.responseText);
-          // Show success regardless of response (Make might return empty)
           document.getElementById('form-card').style.display = 'none';
           document.getElementById('success-state').style.display = 'block';
         };
         
         xhr.onerror = function() {
           console.log('⚠️ XHR error, trying fetch with no-cors...');
-          // Fallback to no-cors fetch
           sendWithNoCors(invoiceData);
         };
         
@@ -474,7 +520,6 @@
           body: JSON.stringify(data)
         });
         
-        // With no-cors we can't read response, but data is sent
         console.log('✅ Sent via no-cors');
         document.getElementById('form-card').style.display = 'none';
         document.getElementById('success-state').style.display = 'block';
