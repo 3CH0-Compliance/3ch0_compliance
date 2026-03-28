@@ -761,11 +761,11 @@
           <div class="plan-features">
             <div class="feature-item">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
-              <span>All 9 POPIA documents</span>
+              <span>Unlimited AI Compliance Checks</span>
             </div>
             <div class="feature-item">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
-              <span>Prior Auth Register</span>
+              <span>Unlimited Compliance Documents</span>
             </div>
             <div class="feature-item">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
@@ -773,144 +773,96 @@
             </div>
             <div class="feature-item">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
-              <span>Audit-ready documentation</span>
+              <span>Audit-Ready Documentation</span>
             </div>
             <div class="feature-item">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
-              <span>3 user seats</span>
+              <span>Priority Support</span>
             </div>
             <div class="feature-item">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
-              <span>Priority support</span>
-            </div>
-            <div class="feature-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
-              <span>Quarterly doc refresh</span>
+              <span>Quarterly Doc Refresh</span>
             </div>
           </div>
           <button class="plan-btn primary" onclick="CheckoutManager.openPaymentModal('agency-pro')">Get Started</button>
         </div>
       </div>
 
-      <!-- Plans Grid - ZAR (POPIA - 3 tiers: Starter, Agency Pro, Enterprise) -->
-      <div class="plans-grid three-col" id="plans-zar" style="display: none;">
-        <!-- Starter Plan ZAR -->
-        <div class="plan-card" id="plan-starter-zar">
-          <div class="plan-name">Starter</div>
-          <div class="plan-subtitle">Sole traders & micro SMEs</div>
-          <div class="plan-price" id="starter-price-zar">R799</div>
-          <div class="plan-price-note" id="starter-note-zar">/mo</div>
+      <!-- Plans Grid - ZAR (Free + Agency Pro) -->
+      <div class="plans-grid two-col" id="plans-zar" style="display: none;">
+
+        <!-- Free Plan ZAR -->
+        <div class="plan-card" id="plan-free-zar">
+          <div class="plan-name">Free</div>
+          <div class="plan-subtitle">Try before you buy</div>
+          <div class="plan-price">R0</div>
+          <div class="plan-price-note">forever</div>
           <div class="plan-features">
             <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>Privacy policy generator</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>1 AI Compliance Advisor check per month</span>
             </div>
             <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>Employee training script</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>1 full compliance document per month</span>
             </div>
             <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>Data retention schedule</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>No watermarks</span>
             </div>
             <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>Basic incident response doc</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>Basic Discord support</span>
             </div>
-            <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>1 user seat</span>
+            <div class="feature-item disabled">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 18L18 6M6 6l12 12" stroke="#666" stroke-width="2"/></svg>
+              <span>No real-time regulatory updates</span>
             </div>
-            <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>Email support only</span>
+            <div class="feature-item disabled">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 18L18 6M6 6l12 12" stroke="#666" stroke-width="2"/></svg>
+              <span>No risk analysis</span>
             </div>
           </div>
-          <button class="plan-btn secondary" onclick="CheckoutManager.openPaymentModal('starter')">Choose Starter</button>
+          <a href="checkout-free.html" class="plan-btn secondary">Start Free</a>
         </div>
 
         <!-- Agency Pro Plan ZAR -->
         <div class="plan-card highlighted" id="plan-agency-zar">
-          <div class="popular-badge-top">Most popular</div>
+          <div class="side-accent"></div>
+          <div class="popular-indicator"><span>Most popular</span></div>
           <div class="plan-name">Agency Pro</div>
           <div class="plan-subtitle">SMEs, agencies, growing teams</div>
           <div class="plan-price" id="agency-price-zar">R1 899</div>
           <div class="plan-price-note" id="agency-note-zar">/mo</div>
           <div class="plan-features">
             <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>Unlimited AI Compliance Checks</span>
+            </div>
+            <div class="feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
               <span>All 9 POPIA documents</span>
             </div>
             <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>Prior Auth Register</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>DPA &amp; Processing Agreements</span>
             </div>
             <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>DPA & Processing Agreements</span>
-            </div>
-            <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
               <span>Audit-ready documentation</span>
             </div>
             <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>3 user seats</span>
-            </div>
-            <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
               <span>Priority support</span>
             </div>
             <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/></svg>
               <span>Quarterly doc refresh</span>
             </div>
           </div>
           <button class="plan-btn primary" onclick="CheckoutManager.openPaymentModal('agency-pro')">Get Agency Pro</button>
         </div>
 
-        <!-- Enterprise Plan ZAR -->
-        <div class="plan-card" id="plan-enterprise-zar">
-          <div class="plan-name">Enterprise</div>
-          <div class="plan-subtitle">Large firms, legal teams, resellers</div>
-          <div class="plan-price" id="enterprise-price-zar">R4 990</div>
-          <div class="plan-price-note" id="enterprise-note-zar">/mo</div>
-          <div class="plan-features">
-            <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>Everything in Agency Pro</span>
-            </div>
-            <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>White-label client reports</span>
-            </div>
-            <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>Unlimited user seats</span>
-            </div>
-            <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>Custom branding</span>
-            </div>
-            <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>EU AI Act + ISO 42001 docs</span>
-            </div>
-            <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>Dedicated account manager</span>
-            </div>
-            <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>Monthly doc refresh + alerts</span>
-            </div>
-            <div class="feature-item">
-              <span style="color: var(--secondary-text);">–</span>
-              <span>API access</span>
-            </div>
-          </div>
-          <button class="plan-btn secondary" onclick="CheckoutManager.openPaymentModal('enterprise')">Contact Sales</button>
-        </div>
       </div>
 
       <!-- DISCOUNTS SECTION - HIDDEN -->
@@ -1048,9 +1000,7 @@
             },
             ZAR: {
                 free: 0,
-                starter: { monthly: 799.00, annual: 7990.00 },
                 'agency-pro': { monthly: 1899.00, annual: 18990.00 },
-                enterprise: { monthly: 4990.00, annual: 49900.00 },
                 symbol: 'R',
                 displayName: 'ZAR (R)'
             }
@@ -1176,54 +1126,28 @@
 
         updateInternationalPrices(prices, isAnnual) {
             const agencyPrices = prices['agency-pro'];
-            const amount = isAnnual ? agencyPrices.annual : agencyPrices.monthly;
-            const monthlyEquiv = isAnnual ? (agencyPrices.annual / 12).toFixed(0) : agencyPrices.monthly;
-            const note = isAnnual 
-                ? `${prices.symbol}${monthlyEquiv}/mo · save ${prices.symbol}${((agencyPrices.monthly * 12) - agencyPrices.annual).toFixed(0)}`
-                : 'per month';
+            const savings = ((agencyPrices.monthly * 12) - agencyPrices.annual).toFixed(0);
+            const note = isAnnual
+                ? `per year · save ${prices.symbol}${savings}`
+                : `per month · or ${prices.symbol}${agencyPrices.annual.toFixed(0)}/yr (save ${prices.symbol}${savings})`;
 
-            document.getElementById('agency-price').textContent = `${prices.symbol}${this.formatNumber(amount)}`;
+            document.getElementById('agency-price').textContent = isAnnual
+                ? `${prices.symbol}${this.formatNumber(agencyPrices.annual)}`
+                : `${prices.symbol}${this.formatNumber(agencyPrices.monthly)}`;
             document.getElementById('agency-price-note').textContent = note;
         },
 
         updateZARPrices(prices, isAnnual) {
-            // Starter
-            const starterMonthly = prices.starter.monthly;
-            const starterAnnual = prices.starter.annual;
-            const starterSavings = (starterMonthly * 12) - starterAnnual;
-            
-            if (isAnnual) {
-                document.getElementById('starter-price-zar').textContent = `R${this.formatNumber(starterMonthly)}`;
-                document.getElementById('starter-note-zar').textContent = `R${this.formatNumber(starterAnnual)}/yr — save R${this.formatNumber(starterSavings)} (17%)`;
-            } else {
-                document.getElementById('starter-price-zar').textContent = `R${this.formatNumber(starterMonthly)}`;
-                document.getElementById('starter-note-zar').textContent = '/mo';
-            }
-
-            // Agency Pro
             const agencyMonthly = prices['agency-pro'].monthly;
             const agencyAnnual = prices['agency-pro'].annual;
             const agencySavings = (agencyMonthly * 12) - agencyAnnual;
-            
-            if (isAnnual) {
-                document.getElementById('agency-price-zar').textContent = `R${this.formatNumber(agencyMonthly)}`;
-                document.getElementById('agency-note-zar').textContent = `R${this.formatNumber(agencyAnnual)}/yr — save R${this.formatNumber(agencySavings)} (17%)`;
-            } else {
-                document.getElementById('agency-price-zar').textContent = `R${this.formatNumber(agencyMonthly)}`;
-                document.getElementById('agency-note-zar').textContent = '/mo';
-            }
 
-            // Enterprise
-            const enterpriseMonthly = prices.enterprise.monthly;
-            const enterpriseAnnual = prices.enterprise.annual;
-            const enterpriseSavings = (enterpriseMonthly * 12) - enterpriseAnnual;
-            
             if (isAnnual) {
-                document.getElementById('enterprise-price-zar').textContent = `R${this.formatNumber(enterpriseMonthly)}`;
-                document.getElementById('enterprise-note-zar').textContent = `R${this.formatNumber(enterpriseAnnual)}/yr — save R${this.formatNumber(enterpriseSavings)} (17%)`;
+                document.getElementById('agency-price-zar').textContent = `R${this.formatNumber(agencyAnnual)}`;
+                document.getElementById('agency-note-zar').textContent = `per year · save R${this.formatNumber(agencySavings)}`;
             } else {
-                document.getElementById('enterprise-price-zar').textContent = `R${this.formatNumber(enterpriseMonthly)}`;
-                document.getElementById('enterprise-note-zar').textContent = '/mo';
+                document.getElementById('agency-price-zar').textContent = `R${this.formatNumber(agencyMonthly)}`;
+                document.getElementById('agency-note-zar').textContent = `/mo · or R${this.formatNumber(agencyAnnual)}/yr (save R${this.formatNumber(agencySavings)})`;
             }
         },
 
@@ -1248,9 +1172,7 @@
             const billingText = this.currentBilling === 'annual' ? 'billed annually' : 'billed monthly';
             
             const planNames = {
-                'starter': 'Starter',
-                'agency-pro': 'Agency Pro',
-                'enterprise': 'Enterprise'
+                'agency-pro': 'Agency Pro'
             };
 
             document.getElementById('modal-plan-name').textContent = planNames[plan] || plan;
