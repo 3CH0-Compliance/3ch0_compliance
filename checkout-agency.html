@@ -963,56 +963,66 @@
   <div class="security-badge">🔒 Secure</div>
 
   <script>
-    // ================================================
-    // 🧪 CONFIGURATION
-    // ================================================
-    const TESTING_MODE = false;
+    // ╔══════════════════════════════════════════════════════════╗
+    // ║  true  = Sandbox (fake money, test accounts)            ║
+    // ║  false = Live    (real money)                           ║
+    // ╚══════════════════════════════════════════════════════════╝
+    const TESTING_MODE   = false;
     const SHOW_DISCOUNTS = false;
-    // ================================================
 
-    // Debug: Log localStorage values immediately
-    console.log('=== CHECKOUT PAGE LOADED ===');
-    console.log('localStorage.userCountry:', localStorage.getItem('userCountry'));
-    console.log('localStorage.userCurrency:', localStorage.getItem('userCurrency'));
+    const EDGE_URL = 'https://kqdlhvvikscxxseopvdw.supabase.co/functions/v1/bright-api';
+    const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxZGxodnZpa3NjeHhzZW9wdmR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkwMTc3OTMsImV4cCI6MjA2NDU5Mzc5M30.Ny1Me9jRt5S2ex11RC27bm9ZsxOlckW_QzTjPsaupYc';
 
     const CheckoutManager = {
-        LIVE_CLIENT_ID: 'AVTshKcvivgfNuXQ5m8wQDY2mpa1yOyslAIETs2qOK5jSnQKOQP0ZQE9mh8eBI_klGTKdri4tgLVNWnB',
-        SANDBOX_CLIENT_ID: 'Aa_1aC2oZR6PotjBand6hWpscKPilESP7eSAF6X3aWxDz2JV-TqX2wGNr5CIChfWlnP8egEJcMEYbz6l',
-        
+
+        // ── Client IDs ──────────────────────────────────────────
+        // IMPORTANT: Both sandbox and live plans were created under
+        // the SAME PayPal app (AScqRRVx...), so we use that for both.
+        LIVE_CLIENT_ID:    'AVTshKcvivgfNuXQ5m8wQDY2mpa1yOyslAIETs2qOK5jSnQKOQP0ZQE9mh8eBI_klGTKdri4tgLVNWnB',
+        SANDBOX_CLIENT_ID: 'AScqRRVxCzJ2i9p3h42OATWV8iHpXTZKDSF-DTNP2DWQj_2U1OEuWAE5Uqkaq3rrt0X2srmwnVNjjXTG',
+
+        // ── Plan IDs ────────────────────────────────────────────
+        SANDBOX_PLAN_IDS: {
+            USD: { monthly: 'P-78301187HJ4470149NHFW3ZQ', annual: '' },
+            EUR: { monthly: '', annual: '' },
+            GBP: { monthly: '', annual: '' },
+        },
+        LIVE_PLAN_IDS: {
+            USD: { monthly: 'P-3MU00005325943312NA7PXRQ', annual: 'P-78F38222TE946762WNCLEBCA' },
+            EUR: { monthly: 'P-14F3655145016794UNCMEMIY', annual: 'P-7TU1785800211701YNCMEM2Q' },
+            GBP: { monthly: 'P-5AN59848PN013114VNCMEKRI', annual: 'P-1KK66830KY331171ENCMELTY' },
+        },
+
         PRICES: {
-            USD: {
-                free: 0,
-                'agency-pro': { monthly: 99.00, annual: 988.00 },
-                symbol: '$',
-                displayName: 'USD ($)'
-            },
-            EUR: {
-                free: 0,
-                'agency-pro': { monthly: 89.00, annual: 888.00 },
-                symbol: '€',
-                displayName: 'EUR (€)'
-            },
-            GBP: {
-                free: 0,
-                'agency-pro': { monthly: 79.00, annual: 788.00 },
-                symbol: '£',
-                displayName: 'GBP (£)'
-            },
-            ZAR: {
-                free: 0,
-                'agency-pro': { monthly: 1899.00, annual: 18990.00 },
-                symbol: 'R',
-                displayName: 'ZAR (R)'
-            }
+            USD: { free:0, 'agency-pro':{ monthly:99.00,   annual:988.00   }, symbol:'$', displayName:'USD ($)' },
+            EUR: { free:0, 'agency-pro':{ monthly:89.00,   annual:888.00   }, symbol:'€', displayName:'EUR (€)' },
+            GBP: { free:0, 'agency-pro':{ monthly:79.00,   annual:788.00   }, symbol:'£', displayName:'GBP (£)' },
+            ZAR: { free:0, 'agency-pro':{ monthly:1899.00, annual:18990.00 }, symbol:'R', displayName:'ZAR (R)' }
         },
 
         currentCurrency: 'USD',
-        currentBilling: 'monthly',
-        selectedPlan: null,
-        makeWebhookUrl: 'https://hook.us2.make.com/1uatntmkvmo8rsn9nj0mq7l7q5ozkcl6',
-        paypalButtons: null,
-        isTestMode: TESTING_MODE,
-        sdkLoaded: false,
+        currentBilling:  'monthly',
+        selectedPlan:    null,
+        makeWebhookUrl:  'https://hook.us2.make.com/1uatntmkvmo8rsn9nj0mq7l7q5ozkcl6',
+        paypalButtons:   null,
+        isTestMode:      TESTING_MODE,
+        sdkLoaded:       false,
+
+        getPlanId(currency, billing) {
+            const map = this.isTestMode ? this.SANDBOX_PLAN_IDS : this.LIVE_PLAN_IDS;
+            const ids = map[currency];
+            if (!ids) return null;
+            return billing === 'annual' ? ids.annual : ids.monthly;
+        },
+
+        async callEdge(payload) {
+            const res = await fetch(EDGE_URL, {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + ANON_KEY },
+                body:    JSON.stringify(payload)
+            });
+            return res.json();
+        },
 
         init() {
             this.loadUserPreferences();
@@ -1020,167 +1030,97 @@
             this.updatePrices();
             this.showTestingModeIndicator();
             this.showDiscountsSection();
-            
-            // Debug: Show what currency was detected
-            console.log('Checkout loaded with currency:', this.currentCurrency);
-            console.log('localStorage userCountry:', localStorage.getItem('userCountry'));
-            console.log('localStorage userCurrency:', localStorage.getItem('userCurrency'));
+            console.log('Checkout | mode:', this.isTestMode ? 'SANDBOX 🧪' : 'LIVE 💳', '| currency:', this.currentCurrency);
         },
 
         loadUserPreferences() {
             try {
-                // Check URL parameters first (for testing: ?currency=ZAR)
-                const urlParams = new URLSearchParams(window.location.search);
+                const urlParams   = new URLSearchParams(window.location.search);
                 const urlCurrency = urlParams.get('currency');
-                
-                if (urlCurrency && ['USD', 'EUR', 'GBP', 'ZAR'].includes(urlCurrency.toUpperCase())) {
-                    this.currentCurrency = urlCurrency.toUpperCase();
-                    return;
+                if (urlCurrency && ['USD','EUR','GBP','ZAR'].includes(urlCurrency.toUpperCase())) {
+                    this.currentCurrency = urlCurrency.toUpperCase(); return;
                 }
-                
-                const savedCountry = localStorage.getItem('userCountry') || 'US';
+                const savedCountry  = localStorage.getItem('userCountry')  || 'US';
                 const savedCurrency = localStorage.getItem('userCurrency') || 'USD';
                 const euroCountries = ['DE','FR','IT','ES','NL','BE','IE','PT','AT'];
-                
-                if (savedCountry === 'ZA' || savedCurrency === 'ZAR') {
-                    this.currentCurrency = 'ZAR';
-                } else if (euroCountries.includes(savedCountry) || savedCurrency === 'EUR') {
-                    this.currentCurrency = 'EUR';
-                } else if (savedCountry === 'GB' || savedCurrency === 'GBP') {
-                    this.currentCurrency = 'GBP';
-                } else {
-                    this.currentCurrency = 'USD';
-                }
-            } catch (error) {
-                this.currentCurrency = 'USD';
-            }
+                if      (savedCountry==='ZA'||savedCurrency==='ZAR')                  this.currentCurrency='ZAR';
+                else if (euroCountries.includes(savedCountry)||savedCurrency==='EUR') this.currentCurrency='EUR';
+                else if (savedCountry==='GB'||savedCurrency==='GBP')                  this.currentCurrency='GBP';
+                else                                                                   this.currentCurrency='USD';
+            } catch(e) { this.currentCurrency='USD'; }
         },
 
         setupUI() {
             const isZAR = this.currentCurrency === 'ZAR';
-            
             document.getElementById('plans-international').style.display = isZAR ? 'none' : 'grid';
-            document.getElementById('plans-zar').style.display = isZAR ? 'grid' : 'none';
+            document.getElementById('plans-zar').style.display           = isZAR ? 'grid' : 'none';
             document.getElementById('zar-notice').classList.toggle('visible', isZAR);
-            
-            if (isZAR) {
-                document.getElementById('paypal-option').style.display = 'none';
-            }
-
-            if (isZAR && SHOW_DISCOUNTS) {
-                const euDiscount = document.getElementById('eu-ai-discount');
-                if (euDiscount) euDiscount.style.display = 'flex';
-            }
-
+            if (isZAR) document.getElementById('paypal-option').style.display = 'none';
             document.getElementById('current-currency').textContent = this.PRICES[this.currentCurrency].displayName;
         },
 
         showTestingModeIndicator() {
-            if (TESTING_MODE) {
-                const indicator = document.createElement('div');
-                indicator.innerHTML = `
-                    <div style="
-                        position: fixed;
-                        top: 90px;
-                        right: 20px;
-                        background: linear-gradient(135deg, #fbbf24, #f59e0b);
-                        color: #000;
-                        padding: 10px 18px;
-                        border-radius: 100px;
-                        font-size: 11px;
-                        font-weight: 600;
-                        z-index: 9999;
-                        letter-spacing: 0.05em;
-                        text-transform: uppercase;
-                    ">
-                        🧪 Testing Mode
-                    </div>
-                `;
-                document.body.appendChild(indicator);
-            }
+            if (!TESTING_MODE) return;
+            const div = document.createElement('div');
+            div.innerHTML = '<div style="position:fixed;top:90px;right:20px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#000;padding:10px 18px;border-radius:100px;font-size:11px;font-weight:600;z-index:9999;letter-spacing:0.05em;text-transform:uppercase;box-shadow:0 4px 12px rgba(245,158,11,0.4);">🧪 Sandbox — No real payments</div>';
+            document.body.appendChild(div);
         },
 
         showDiscountsSection() {
-            if (SHOW_DISCOUNTS) {
-                document.getElementById('discounts-section').classList.add('visible');
-            }
+            if (SHOW_DISCOUNTS) document.getElementById('discounts-section').classList.add('visible');
         },
 
         switchBilling(billing) {
             this.currentBilling = billing;
-            document.getElementById('monthly-toggle').classList.toggle('active', billing === 'monthly');
-            document.getElementById('annual-toggle').classList.toggle('active', billing === 'annual');
+            document.getElementById('monthly-toggle').classList.toggle('active', billing==='monthly');
+            document.getElementById('annual-toggle').classList.toggle('active',  billing==='annual');
             this.updatePrices();
         },
 
         updatePrices() {
-            const prices = this.PRICES[this.currentCurrency];
+            const prices   = this.PRICES[this.currentCurrency];
             const isAnnual = this.currentBilling === 'annual';
-
-            if (this.currentCurrency === 'ZAR') {
-                this.updateZARPrices(prices, isAnnual);
-            } else {
-                this.updateInternationalPrices(prices, isAnnual);
-            }
+            if (this.currentCurrency==='ZAR') this.updateZARPrices(prices, isAnnual);
+            else                              this.updateInternationalPrices(prices, isAnnual);
         },
 
         updateInternationalPrices(prices, isAnnual) {
-            const agencyPrices = prices['agency-pro'];
-            const savings = ((agencyPrices.monthly * 12) - agencyPrices.annual).toFixed(0);
-            const note = isAnnual
-                ? `per year · save ${prices.symbol}${savings}`
-                : `per month · or ${prices.symbol}${agencyPrices.annual.toFixed(0)}/yr (save ${prices.symbol}${savings})`;
-
-            document.getElementById('agency-price').textContent = isAnnual
-                ? `${prices.symbol}${this.formatNumber(agencyPrices.annual)}`
-                : `${prices.symbol}${this.formatNumber(agencyPrices.monthly)}`;
-            document.getElementById('agency-price-note').textContent = note;
+            const p       = prices['agency-pro'];
+            const savings = ((p.monthly*12) - p.annual).toFixed(0);
+            document.getElementById('agency-price').textContent      = isAnnual ? prices.symbol+this.fmt(p.annual) : prices.symbol+this.fmt(p.monthly);
+            document.getElementById('agency-price-note').textContent = isAnnual
+                ? 'per year · save '+prices.symbol+savings
+                : 'per month · or '+prices.symbol+p.annual.toFixed(0)+'/yr (save '+prices.symbol+savings+')';
         },
 
         updateZARPrices(prices, isAnnual) {
-            const agencyMonthly = prices['agency-pro'].monthly;
-            const agencyAnnual = prices['agency-pro'].annual;
-            const agencySavings = (agencyMonthly * 12) - agencyAnnual;
-
-            if (isAnnual) {
-                document.getElementById('agency-price-zar').textContent = `R${this.formatNumber(agencyAnnual)}`;
-                document.getElementById('agency-note-zar').textContent = `per year · save R${this.formatNumber(agencySavings)}`;
-            } else {
-                document.getElementById('agency-price-zar').textContent = `R${this.formatNumber(agencyMonthly)}`;
-                document.getElementById('agency-note-zar').textContent = `/mo · or R${this.formatNumber(agencyAnnual)}/yr (save R${this.formatNumber(agencySavings)})`;
-            }
+            const p       = prices['agency-pro'];
+            const savings = (p.monthly*12) - p.annual;
+            document.getElementById('agency-price-zar').textContent = isAnnual ? 'R'+this.fmt(p.annual) : 'R'+this.fmt(p.monthly);
+            document.getElementById('agency-note-zar').textContent  = isAnnual
+                ? 'per year · save R'+this.fmt(savings)
+                : '/mo · or R'+this.fmt(p.annual)+'/yr (save R'+this.fmt(savings)+')';
         },
 
-        formatNumber(num) {
-            if (this.currentCurrency === 'ZAR') {
-                return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-            }
-            return num.toFixed(2);
+        fmt(num) {
+            return this.currentCurrency==='ZAR'
+                ? num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,' ')
+                : num.toFixed(2);
         },
 
         openPaymentModal(plan) {
             this.selectedPlan = plan;
-            const prices = this.PRICES[this.currentCurrency];
+            const prices     = this.PRICES[this.currentCurrency];
             const planPrices = prices[plan];
-            
-            if (!planPrices) {
-                alert('This plan is not available. Please contact sales.');
-                return;
-            }
+            if (!planPrices) { alert('This plan is not available. Please contact sales.'); return; }
 
-            const amount = this.currentBilling === 'annual' ? planPrices.annual : planPrices.monthly;
-            const billingText = this.currentBilling === 'annual' ? 'billed annually' : 'billed monthly';
-            
-            const planNames = {
-                'agency-pro': 'Agency Pro'
-            };
-
-            document.getElementById('modal-plan-name').textContent = planNames[plan] || plan;
-            document.getElementById('modal-plan-details').textContent = 
-                `${prices.symbol}${this.formatNumber(amount)} ${billingText}`;
+            const amount = this.currentBilling==='annual' ? planPrices.annual : planPrices.monthly;
+            document.getElementById('modal-plan-name').textContent    = { 'agency-pro':'Agency Pro' }[plan] || plan;
+            document.getElementById('modal-plan-details').textContent =
+                prices.symbol+this.fmt(amount)+' '+(this.currentBilling==='annual' ? 'billed annually' : 'billed monthly');
 
             document.getElementById('payment-modal').classList.add('active');
-            
+
             if (this.currentCurrency !== 'ZAR') {
                 document.getElementById('paypal-option').style.display = 'block';
                 this.loadPayPalSDK();
@@ -1195,191 +1135,148 @@
         },
 
         loadPayPalSDK() {
-            const existingScript = document.querySelector('script[src*="paypal.com/sdk"]');
-            if (existingScript) existingScript.remove();
-
+            const existing = document.querySelector('script[src*="paypal.com/sdk"]');
+            if (existing) existing.remove();
             const container = document.getElementById('paypal-button-container');
             if (container) container.innerHTML = '';
-            
-            this.sdkLoaded = false;
-            if (this.paypalButtons) {
-                try { this.paypalButtons.close(); } catch(e) {}
-                this.paypalButtons = null;
-            }
-
+            this.sdkLoaded    = false;
+            this.paypalButtons = null;
             this.showPayPalLoading(true);
 
+            // One client ID handles everything — sandbox plans load in sandbox,
+            // live plans load in live. PayPal detects this automatically.
             const clientId = this.isTestMode ? this.SANDBOX_CLIENT_ID : this.LIVE_CLIENT_ID;
-            const sdkUrl = `https://www.paypal.com/sdk/js?client-id=${clientId}&vault=true&intent=subscription&components=buttons&disable-funding=paylater,venmo,sepa,bancontact,eps,giropay,ideal,mybank,p24,sofort`;
-            
-            const script = document.createElement('script');
-            script.src = sdkUrl;
-            script.async = true;
-            
-            script.onload = () => {
-                this.sdkLoaded = true;
-                this.initializePayPal();
-            };
-            
-            script.onerror = () => {
-                this.showPayPalError('Failed to load payment system. Please refresh.');
-            };
-            
+            const script   = document.createElement('script');
+            script.src     = 'https://www.paypal.com/sdk/js?client-id='+clientId+'&vault=true&intent=subscription&components=buttons&disable-funding=paylater,venmo,sepa,bancontact,eps,giropay,ideal,mybank,p24,sofort';
+            script.async   = true;
+            script.onload  = () => { this.sdkLoaded = true; this.initializePayPal(); };
+            script.onerror = () => this.showPayPalError('Failed to load PayPal. Please refresh or use bank transfer.');
             document.head.appendChild(script);
         },
 
         initializePayPal() {
-            if (typeof paypal === 'undefined') {
-                setTimeout(() => this.initializePayPal(), 500);
-                return;
-            }
-            try {
-                this.renderPayPalButtons();
-                this.showPayPalLoading(false);
-            } catch (error) {
-                this.showPayPalError('Failed to initialize payment system');
-            }
+            if (typeof paypal === 'undefined') { setTimeout(()=>this.initializePayPal(), 500); return; }
+            try   { this.renderPayPalButtons(); this.showPayPalLoading(false); }
+            catch { this.showPayPalError('Failed to initialize PayPal.'); }
         },
 
         renderPayPalButtons() {
-            if (this.paypalButtons) {
-                try { this.paypalButtons.close(); } catch (e) {}
+            if (this.paypalButtons) { try { this.paypalButtons.close(); } catch(e){} }
+            document.getElementById('paypal-button-container').innerHTML = '';
+
+            const planId = this.getPlanId(this.currentCurrency, this.currentBilling);
+
+            if (!planId) {
+                this.showPayPalError(
+                    this.isTestMode
+                        ? 'Sandbox plan not set up for '+this.currentCurrency+' '+this.currentBilling+'. Only USD monthly is available for sandbox testing.'
+                        : 'PayPal not available for '+this.currentCurrency+' '+this.currentBilling+'. Please use bank transfer.'
+                );
+                return;
             }
 
-            document.getElementById('paypal-button-container').innerHTML = '';
+            console.log('PayPal | mode:', this.isTestMode?'SANDBOX':'LIVE', '| currency:', this.currentCurrency, '| billing:', this.currentBilling, '| planId:', planId.slice(0,12)+'...');
 
             try {
                 this.paypalButtons = paypal.Buttons({
-                    style: { 
-                        shape: 'pill', 
-                        color: 'blue',
-                        label: 'subscribe',
-                        layout: 'vertical',
-                        tagline: false
+                    style: { shape:'pill', color:'blue', label:'subscribe', layout:'vertical', tagline:false },
+
+                    createSubscription: (data, actions) => {
+                        return actions.subscription.create({ plan_id: planId });
                     },
-                    createSubscription: (data, actions) => this.handleSubscriptionCreation(data, actions),
+
                     onApprove: async (data, actions) => {
-                        try {
-                            const subscription = await actions.subscription.get();
-                            this.handleSubscriptionApproval(data, subscription);
-                        } catch (e) {
-                            this.handleSubscriptionApproval(data, null);
-                        }
+                        let subscription = null;
+                        try { subscription = await actions.subscription.get(); } catch(e){}
+                        await this.handleSubscriptionApproval(data, subscription);
                     },
+
                     onError: (err) => {
+                        console.error('PayPal error:', err);
                         this.showPayPalError('Payment failed. Please try again or use bank transfer.');
                     },
-                    onCancel: () => {}
+
+                    onCancel: () => console.log('PayPal cancelled.')
                 });
+
                 this.paypalButtons.render('#paypal-button-container');
-            } catch (error) {
-                this.showPayPalError('Failed to load payment options');
-            }
-        },
-
-        async handleSubscriptionCreation(data, actions) {
-            const prices = this.PRICES[this.currentCurrency];
-            const planPrices = prices[this.selectedPlan];
-            const amount = this.currentBilling === 'annual' ? planPrices.annual : planPrices.monthly;
-
-            const subscriptionData = {
-                action: 'create_subscription',
-                plan_type: this.currentBilling,
-                plan_name: this.selectedPlan,
-                currency: this.currentCurrency,
-                amount: amount,
-                user_country: localStorage.getItem('userCountry') || 'unknown',
-                is_test_mode: this.isTestMode,
-                timestamp: new Date().toISOString()
-            };
-
-            try {
-                const response = await fetch(this.makeWebhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(subscriptionData)
-                });
-
-                if (response.ok) {
-                    const result = await response.json();
-                    if (result.paypal_plan_id) {
-                        return actions.subscription.create({ plan_id: result.paypal_plan_id });
-                    }
-                    throw new Error('No PayPal Plan ID returned');
-                }
-                throw new Error('Server error');
-            } catch (error) {
-                this.showPayPalError('Unable to process payment. Please try bank transfer.');
-                throw error;
+            } catch(error) {
+                this.showPayPalError('Failed to load payment options.');
             }
         },
 
         async handleSubscriptionApproval(data, subscriptionDetails) {
-            let customerEmail = '', customerName = '', payerID = data.payerID || '';
-            
+            let customerEmail='', customerName='', payerID=data.payerID||'';
             if (subscriptionDetails && subscriptionDetails.subscriber) {
                 customerEmail = subscriptionDetails.subscriber.email_address || '';
-                if (subscriptionDetails.subscriber.name) {
-                    customerName = `${subscriptionDetails.subscriber.name.given_name || ''} ${subscriptionDetails.subscriber.name.surname || ''}`.trim();
-                }
+                const n = subscriptionDetails.subscriber.name;
+                if (n) customerName = ((n.given_name||'')+' '+(n.surname||'')).trim();
                 payerID = subscriptionDetails.subscriber.payer_id || payerID;
             }
 
-            const prices = this.PRICES[this.currentCurrency];
+            const prices     = this.PRICES[this.currentCurrency];
             const planPrices = prices[this.selectedPlan];
-            const amount = this.currentBilling === 'annual' ? planPrices.annual : planPrices.monthly;
+            const amount     = this.currentBilling==='annual' ? planPrices.annual : planPrices.monthly;
 
-            const approvalData = {
-                action: 'subscription_approved',
-                subscription_id: data.subscriptionID,
-                payer_id: payerID,
-                customer_email: customerEmail,
-                customer_name: customerName,
-                plan_type: this.currentBilling,
-                plan_name: this.selectedPlan,
-                currency: this.currentCurrency,
-                amount: amount,
-                user_country: localStorage.getItem('userCountry') || 'unknown',
-                status: 'active',
-                is_test_mode: this.isTestMode,
-                timestamp: new Date().toISOString()
-            };
+            // Notify Supabase edge function (DB + your email)
+            try {
+                await this.callEdge({
+                    action:          'subscription_approved',
+                    subscription_id: data.subscriptionID,
+                    payer_id:        payerID,
+                    customer_email:  customerEmail,
+                    customer_name:   customerName,
+                    plan_name:       this.selectedPlan,
+                    plan_type:       this.currentBilling,
+                    currency:        this.currentCurrency,
+                    amount:          prices.symbol + this.fmt(amount),
+                    is_test_mode:    this.isTestMode
+                });
+                console.log('✅ Supabase notified');
+            } catch(e) { console.warn('Supabase notification failed:', e); }
 
+            // Ping Make (post-payment workflow)
             try {
                 await fetch(this.makeWebhookUrl, {
-                    method: 'POST',
+                    method:  'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(approvalData)
+                    body: JSON.stringify({
+                        action:          'subscription_approved',
+                        subscription_id: data.subscriptionID,
+                        payer_id:        payerID,
+                        customer_email:  customerEmail,
+                        customer_name:   customerName,
+                        plan_type:       this.currentBilling,
+                        plan_name:       this.selectedPlan,
+                        currency:        this.currentCurrency,
+                        amount:          amount,
+                        is_test_mode:    this.isTestMode,
+                        timestamp:       new Date().toISOString()
+                    })
                 });
-            } catch (e) {}
+                console.log('✅ Make pinged');
+            } catch(e) { console.warn('Make webhook failed:', e); }
 
             localStorage.setItem('userPlan', this.selectedPlan);
             const now = new Date();
-            localStorage.setItem(`submissions-${now.getMonth()}-${now.getFullYear()}`, '∞');
-            window.location.href = "/thank-you-paid.html";
+            localStorage.setItem('submissions-'+now.getMonth()+'-'+now.getFullYear(), '∞');
+            window.location.href = '/thank-you-paid.html';
         },
 
         requestBankInvoice() {
-            const params = new URLSearchParams({ 
-                plan: this.selectedPlan,
-                billing: this.currentBilling
-            });
-            window.location.href = `bank-invoice.html?${params.toString()}`;
+            const params = new URLSearchParams({ plan: this.selectedPlan, billing: this.currentBilling });
+            window.location.href = 'bank-invoice.html?' + params.toString();
         },
 
         showPayPalLoading(show) {
             document.getElementById('paypal-loading').classList.toggle('active', show);
-            const container = document.getElementById('paypal-button-container');
-            if (show) {
-                container.classList.remove('ready');
-            } else {
-                container.classList.add('ready');
-            }
+            const c = document.getElementById('paypal-button-container');
+            if (show) c.classList.remove('ready'); else c.classList.add('ready');
         },
 
         showPayPalError(message) {
             const el = document.getElementById('paypal-error');
-            el.textContent = message;
+            el.textContent   = message;
             el.style.display = 'block';
             this.showPayPalLoading(false);
         }
@@ -1388,19 +1285,16 @@
     document.addEventListener('DOMContentLoaded', () => CheckoutManager.init());
 
     window.addEventListener('storage', (e) => {
-        if (e.key === 'userCurrency' || e.key === 'userCountry') {
+        if (e.key==='userCurrency'||e.key==='userCountry') {
             CheckoutManager.loadUserPreferences();
             CheckoutManager.setupUI();
             CheckoutManager.updatePrices();
         }
     });
 
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') CheckoutManager.closePaymentModal();
-    });
-
+    document.addEventListener('keydown', (e) => { if (e.key==='Escape') CheckoutManager.closePaymentModal(); });
     document.getElementById('payment-modal').addEventListener('click', (e) => {
-        if (e.target.id === 'payment-modal') CheckoutManager.closePaymentModal();
+        if (e.target.id==='payment-modal') CheckoutManager.closePaymentModal();
     });
   </script>
 </body>
