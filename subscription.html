@@ -522,20 +522,20 @@
   </div>
 
     <!-- Security Badge -->
-  <div class="security-badge-indicator">🔒 Secure</div>
+  <div class="security-badge-indicator"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Secure</div>
 
   <!-- Footer - At Bottom -->
   <footer>
     <div class="footer-links">
       <a href="settings.html">Privacy & Terms</a> |
-      <a href="mailto:3CH0.The.Only@gmail.com">Support</a> |
+      <a href="/cdn-cgi/l/email-protection#7447373c445a201c115a3b1a180d341319151d185a171b19">Support</a> |
       <a href="https://discord.gg/W5SrbqK7j3" target="_blank">Join the Community</a>
     </div>
     &copy; 3CH0 Compliance. All rights reserved.
   </footer>
 
   <!-- Enhanced Currency Conversion Script -->
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     document.addEventListener("DOMContentLoaded", function() {
       // Fixed prices by currency
       const FIXED_PRICES = {
@@ -699,8 +699,8 @@
       if (event.persisted) {
         // Page was loaded from cache, update prices
         setTimeout(() => {
-          const event = new Event('storage');
-          window.dispatchEvent(event);
+        setTimeout(() => {
+          updateAllPrices();
         }, 100);
       }
     });
