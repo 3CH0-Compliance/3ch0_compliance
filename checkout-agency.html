@@ -706,7 +706,7 @@
 
       <!-- ZAR Notice -->
       <div class="zar-notice" id="zar-notice">
-        <strong><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> South African Customers:</strong> Bank invoice is currently the only payment option for paid plans. PayPal coming soon!
+        <strong><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> South African Customers:</strong> Bank invoice is currently the only payment option for paid plans. PayFast coming soon!
       </div>
 
       <!-- Billing Toggle -->
@@ -1264,7 +1264,21 @@
 
         requestBankInvoice() {
             const params = new URLSearchParams({ plan: this.selectedPlan, billing: this.currentBilling });
-            window.location.href = 'bank-invoice.html?' + params.toString();
+            if (this.currentCurrency === 'ZAR') {
+                // ZAR customers → local EFT invoice (generates invoice number, bank details)
+                params.set('new', '1');
+                const savedName    = localStorage.getItem('userName')    || '';
+                const savedEmail   = localStorage.getItem('userEmail')   || '';
+                const savedCompany = localStorage.getItem('userCompany') || '';
+                if (savedName)    params.set('name',    savedName);
+                if (savedEmail)   params.set('email',   savedEmail);
+                if (savedCompany) params.set('company', savedCompany);
+                window.location.href = 'bank-invoice.html?' + params.toString();
+            } else {
+                // International customers (USD/EUR/GBP) → international invoice request form
+                params.set('currency', this.currentCurrency);
+                window.location.href = 'bank-invoice-international.html?' + params.toString();
+            }
         },
 
         showPayPalLoading(show) {
@@ -1292,9 +1306,7 @@
     });
 
     document.addEventListener('keydown', (e) => { if (e.key==='Escape') CheckoutManager.closePaymentModal(); });
-    document.getElementById('payment-modal').addEventListener('click', (e) => {
-        if (e.target.id==='payment-modal') CheckoutManager.closePaymentModal();
-    });
+    document.getElementById('payment-modal').addEventListener('click', (e) => { if (e.target === document.getElementById('payment-modal')) CheckoutManager.closePaymentModal(); });
   </script>
 </body>
 </html>
