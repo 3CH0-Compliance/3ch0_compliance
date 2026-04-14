@@ -345,8 +345,8 @@
 
     /* Footer - At Bottom */
     footer {
-      padding: 40px 20px;
-      background-color: rgba(9, 6, 3, 0.9);
+      padding: 48px 40px 36px;
+      background-color: rgba(9, 6, 3, 0.95);
       text-align: center;
       font-size: 14px;
       color: #777;
@@ -354,12 +354,21 @@
       backdrop-filter: blur(10px);
       flex-shrink: 0;
       width: 100%;
+      margin-top: auto;
     }
 
     footer a {
-      color: #ccc;
-      text-decoration: underline;
-      margin: 0 8px;
+      color: #888;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    footer a:hover {
+      color: var(--accent);
+    }
+
+    .footer-links {
+      margin-top: 20px;
     }
 
     /* Animation */
@@ -431,7 +440,7 @@
     <div class="container">
       <div class="header">
         <h1>Simple, Transparent Pricing</h1>
-        <p class="subheader">Get compliant in minutes, not weeks. Start with our free plan or unlock unlimited documents with Agency Pro.</p>
+        <p class="subheader">Most businesses don't know which laws apply to them. We tell you in minutes and give you exactly what you need to fix it.</p>
 
         <!-- Currency Indicator -->
         <div class="currency-indicator">
@@ -465,7 +474,7 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M20 6L9 17L4 12" stroke="#92cdec" stroke-width="2" stroke-linecap="round"/>
               </svg>
-              <span>Basic Discord support</span>
+              <span>See which laws apply to your business</span>
             </div>
             <div class="feature">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -515,8 +524,9 @@
           <div style="text-align: center; margin-top: 10px; font-size: 13px; color: var(--secondary-text);">
             Cancel anytime
           </div>
-        </div>
       </div>
+    </div>
+  </div>
 
     <!-- Security Badge -->
   <div class="security-badge-indicator"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Secure</div>
