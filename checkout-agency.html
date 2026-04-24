@@ -83,7 +83,7 @@
 
     nav {
       background: rgba(10, 10, 10, 0.98);
-      padding: 18px 40px;
+      padding: 16px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -103,7 +103,15 @@
     }
 
     nav a:hover { color: #fdfdfe; }
-    .logo-img { height: 60px; filter: brightness(120%); }
+    nav{background:rgba(10,10,10,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border-color, rgba(255,255,255,.1));padding:16px 40px;display:flex;justify-content:space-between;align-items:center;position:fixed;top:0;left:0;right:0;z-index:900}
+nav a{margin-left:22px;font-weight:500;color:var(--accent, #92cdec);text-decoration:none;font-size:14px;transition:color .25s;position:relative}
+nav a:hover{color:#fff}
+nav a.nav-active{color:#fff}
+nav a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gradient, linear-gradient(135deg,#ffffff,#92cdec,#0069d9));transition:width .3s}
+nav a:hover::after,nav a.nav-active::after{width:100%}
+.logo-img{height:52px;filter:brightness(115%)}
+.nav-cta{background:var(--gradient, linear-gradient(135deg,#ffffff,#92cdec,#0069d9))!important;color:#0a0a0a!important;padding:8px 20px;border-radius:30px;font-weight:700!important}
+.nav-cta::after{display:none!important}
 
     .container {
       max-width: 1200px;
@@ -684,15 +692,16 @@
 </head>
 <body>
   <div class="main-content">
-    <nav class="glass-panel">
-      <div><img src="3CH0_logo_transparent_fixed.png" alt="3CH0 Logo" class="logo-img"></div>
-      <div>
-        <a href="home.html">Home</a>
-        <a href="compliance_dashboard.html">Dashboard</a>
-        <a href="pricing.html">Pricing</a>
-        <a href="settings.html">Settings</a>
-      </div>
-    </nav>
+    <nav>
+  <div><img src="3CH0_logo_transparent_fixed.png" alt="3CH0" class="logo-img"></div>
+  <div style="display:flex;align-items:center;">
+    <a href="home.html">Home</a>
+    <a href="index.html">Dashboard</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="settings.html">Settings</a>
+    <a href="index.html#start" class="nav-cta">Start Free Check</a>
+  </div>
+</nav>
 
     <div class="container">
       <h1>Choose Your Plan</h1>
@@ -832,7 +841,7 @@
           <div class="popular-indicator"><span>Most popular</span></div>
           <div class="plan-name">Agency Pro</div>
           <div class="plan-subtitle">SMEs, agencies, growing teams</div>
-          <div class="plan-price" id="agency-price-zar">R1 899</div>
+          <div class="plan-price" id="agency-price-zar">R1 499</div>
           <div class="plan-price-note" id="agency-note-zar">/mo</div>
           <div class="plan-features">
             <div class="feature-item">
@@ -996,7 +1005,7 @@
             USD: { free:0, 'agency-pro':{ monthly:99.00,   annual:988.00   }, symbol:'$', displayName:'USD ($)' },
             EUR: { free:0, 'agency-pro':{ monthly:89.00,   annual:888.00   }, symbol:'€', displayName:'EUR (€)' },
             GBP: { free:0, 'agency-pro':{ monthly:79.00,   annual:788.00   }, symbol:'£', displayName:'GBP (£)' },
-            ZAR: { free:0, 'agency-pro':{ monthly:1899.00, annual:18990.00 }, symbol:'R', displayName:'ZAR (R)' }
+            ZAR: { free:0, 'agency-pro':{ monthly:1499.00, annual:14990.00 }, symbol:'R', displayName:'ZAR (R)' }
         },
 
         currentCurrency: 'USD',
