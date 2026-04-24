@@ -1,644 +1,1723 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3CH0 Compliance</title>
-  
-  <!-- Cache busting - force reload -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  
-  <!-- Security Headers -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:;">
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta http-equiv="X-Frame-Options" content="DENY">
-  <meta http-equiv="X-XSS-Protection" content="1; mode=block">
-  
-  <link rel="icon" href="3CH0 logo.png" type="image/png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <style>
-    /* COMPLETELY NEW STYLES - CACHE BUSTED */
-    :root {
-      --main-bg: #0a0a0a;
-      --gradient: linear-gradient(135deg, #ffffff, #92cdec, #0069d9);
-      --text-color: #ffffff;
-      --button-text: #0a0a0a;
-      --card-bg: rgba(20, 20, 20, 0.95);
-      --border-color: rgba(255, 255, 255, 0.1);
-      --accent: #92cdec;
-      --secondary-text: #a0a0a0;
-      --glass-panel: rgba(15, 15, 15, 0.8);
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Compliance Dashboard – 3CH0</title>
+<link rel="icon" href="3CH0 logo.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--grad:linear-gradient(135deg,#ffffff,#92cdec,#0069d9);--txt:#ffffff;--btn-txt:#0a0a0a;--card:rgba(18,18,18,.97);--border:rgba(255,255,255,.1);--accent:#92cdec;--sec:#a0a0a0;--success:#10b981;--warn:#f59e0b;--danger:#ef4444}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;overflow-x:hidden;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at 15% 50%,rgba(146,205,236,.13) 0%,transparent 50%),radial-gradient(circle at 85% 80%,rgba(0,105,217,.12) 0%,transparent 50%),radial-gradient(circle at 50% 10%,rgba(146,205,236,.08) 0%,transparent 45%);z-index:-1;animation:bgP 22s ease infinite}
+@keyframes bgP{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.75;transform:scale(1.06)}}
+nav{background:rgba(10,10,10,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:16px 40px;display:flex;justify-content:space-between;align-items:center;position:fixed;top:0;left:0;right:0;z-index:900}
+nav a{margin-left:22px;font-weight:500;color:var(--accent);text-decoration:none;font-size:14px;transition:color .25s;position:relative}
+nav a:hover{color:#fff}nav a.nav-active{color:#fff}
+nav a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--grad);transition:width .3s}
+nav a:hover::after,nav a.nav-active::after{width:100%}
+.logo-img{height:52px;filter:brightness(115%)}
+.nav-cta{background:var(--grad)!important;color:var(--btn-txt)!important;padding:8px 20px;border-radius:30px;font-weight:700!important}.nav-cta::after{display:none!important}
+.hero{padding:130px 20px 64px;text-align:center;max-width:860px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(146,205,236,.1);border:1px solid rgba(146,205,236,.25);border-radius:30px;padding:7px 18px;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin-bottom:26px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4.5vw,3.6rem);line-height:1.12;margin-bottom:18px}
+.hero h1 em{font-style:italic;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:1.1rem;color:var(--sec);max-width:600px;margin:0 auto 32px;line-height:1.7}
+.btn-hero{display:inline-flex;align-items:center;gap:8px;background:var(--grad);color:var(--btn-txt);border:none;border-radius:40px;padding:17px 42px;font-size:1.05rem;font-weight:700;cursor:pointer;text-decoration:none;transition:all .3s;box-shadow:0 8px 30px rgba(146,205,236,.3)}
+.btn-hero:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(146,205,236,.45)}
+.trust-row{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-top:20px;font-size:12px;color:var(--sec)}
+.trust-row span{display:flex;align-items:center;gap:6px}
+.trust-row svg{color:var(--success);flex-shrink:0}
+.funnel{max-width:820px;margin:0 auto;padding:0 20px 80px}
+.step-bar{display:flex;align-items:center;justify-content:center;margin-bottom:44px}
+.sn{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;max-width:130px}
+.sc{width:36px;height:36px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--sec);transition:all .35s;background:#161616;position:relative;z-index:1}
+.sc.active{border-color:var(--accent);color:var(--accent);background:#1a2e3a;box-shadow:0 0 0 5px rgba(146,205,236,.12)}
+.sc.done{background:#0069d9;border-color:#0069d9;color:#fff;-webkit-text-fill-color:#fff;box-shadow:0 0 0 4px rgba(0,105,217,.2)}
+.sl{font-size:11px;color:var(--sec);text-align:center;transition:color .3s;white-space:nowrap}
+.sl.active{color:var(--accent)}
+.sline{flex:1;height:1px;background:var(--border);max-width:56px;transition:background .4s}
+.sline.done{background:var(--accent)}
+@media(max-width:560px){.sl{display:none}.sc{width:28px;height:28px;font-size:10px}}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px;backdrop-filter:blur(12px);display:none;animation:pIn .38s cubic-bezier(.34,1.2,.64,1)}
+.panel.active{display:block}
+@keyframes pIn{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.ptitle{font-family:'Playfair Display',serif;font-size:22px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.psub{font-size:14px;color:var(--sec);margin-bottom:28px;line-height:1.6}
+.step-nav{display:flex;justify-content:space-between;align-items:center;margin-top:28px;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 26px;font-size:14px;font-weight:700;color:var(--btn-txt);border:none;border-radius:30px;background:var(--grad);cursor:pointer;text-decoration:none;transition:all .3s;box-shadow:0 6px 22px rgba(146,205,236,.22)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(146,205,236,.4)}
+.btn-ghost{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;font-size:13px;font-weight:600;color:var(--sec);border:1px solid rgba(255,255,255,.12);border-radius:30px;background:transparent;cursor:pointer;transition:all .25s}
+.btn-ghost:hover{border-color:rgba(146,205,236,.35);color:var(--accent)}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+/* FORM FIELDS */
+.fg{margin-bottom:18px}
+.fg label{display:block;font-size:13px;font-weight:600;color:var(--txt);margin-bottom:7px;line-height:1.4}
+.fg label .req{color:var(--accent);margin-right:3px}
+.fg label .opt{font-size:11px;font-weight:400;color:var(--sec);margin-left:6px}
+.fg input,.fg select,.fg textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-size:13px;color:var(--txt);font-family:'Inter',sans-serif;transition:border-color .2s;outline:none;appearance:none;-webkit-appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:rgba(146,205,236,.5)}
+.fg select option{background:#1a1a1a;color:#fff}
+.fg textarea{min-height:76px;resize:vertical}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:520px){.fgrid{grid-template-columns:1fr}}
 
-    body {
-      background-color: var(--main-bg);
-      color: var(--text-color);
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 24px;
-      overflow-x: hidden;
-      line-height: 1.6;
-    }
+/* CHECKBOX GRID — TRANSLUCENT LIGHT-BLUE CUSTOM */
+.cb-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:4px}
+@media(max-width:520px){.cb-grid{grid-template-columns:1fr}}
+.cb-item{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:11px 14px;cursor:pointer;transition:all .22s;min-height:44px;position:relative}
+.cb-item:hover{border-color:rgba(146,205,236,.35);background:rgba(146,205,236,.06)}
+.cb-item input[type=checkbox]{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+.cb-box{width:18px;height:18px;min-width:18px;border-radius:5px;border:1.5px solid rgba(146,205,236,.45);background:#141414;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .22s}
+.cb-box svg{opacity:0;transition:opacity .18s,transform .18s;transform:scale(.7)}
+.cb-item span{font-size:13px;color:var(--sec);line-height:1.3;display:block;transition:color .2s}
+.cb-item input:checked~.cb-box{background:#0069d9;border-color:#0069d9;box-shadow:0 0 0 3px rgba(0,105,217,.2)}
+.cb-item input:checked~.cb-box svg{opacity:1;transform:scale(1);stroke:#ffffff}
+.cb-item input:checked~span{color:var(--txt)}
+.cb-item:has(input:checked){border-color:rgba(146,205,236,.45);background:rgba(146,205,236,.07)}
 
-    /* NEW: Animated background matching other pages */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(circle at 20% 50%, rgba(146, 205, 236, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(0, 105, 217, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 40% 20%, rgba(146, 205, 236, 0.1) 0%, transparent 50%);
-      z-index: -2;
-      animation: backgroundShift 20s ease infinite;
-    }
+/* STEP 2 REGULATION CARDS */
+.reg-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+@media(max-width:520px){.reg-grid{grid-template-columns:1fr}}
+.reg-card{background:rgba(255,255,255,.03);border:2px solid var(--border);border-radius:14px;padding:18px;cursor:pointer;transition:all .25s;position:relative}
+.reg-card:hover{border-color:rgba(146,205,236,.4);background:rgba(146,205,236,.05)}
+.reg-card.selected{border-color:var(--accent);background:rgba(146,205,236,.08)}
+.reg-card .chk{position:absolute;top:12px;right:14px;width:22px;height:22px;border-radius:50%;background:var(--grad);color:var(--btn-txt);font-size:11px;font-weight:700;display:none;align-items:center;justify-content:center}
+.reg-card.selected .chk{display:flex}
+.reg-name{font-size:16px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:3px}
+.reg-sub{font-size:11px;color:var(--sec)}
+.reg-body{font-size:12px;color:var(--sec);margin-top:8px;line-height:1.6}
+.reg-badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;margin-top:7px}
+.reg-badge.yes{background:rgba(16,185,129,.12);color:var(--success);border:1px solid rgba(16,185,129,.3)}
+.reg-badge.maybe{background:rgba(245,158,11,.1);color:var(--warn);border:1px solid rgba(245,158,11,.25)}
 
-    @keyframes backgroundShift {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.8; transform: scale(1.1); }
-    }
+.sdiv{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--sec);margin:22px 0 14px;display:flex;align-items:center;gap:10px}
+.sdiv::after{content:'';flex:1;height:1px;background:var(--border)}
 
-    /* Particle background */
-    .particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      opacity: 0.2;
-    }
+/* DOC TABS */
+.doc-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.doc-tab{padding:8px 18px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--sec);transition:all .2s}
+.doc-tab:hover{border-color:rgba(146,205,236,.35);color:var(--accent)}
+.doc-tab.active{background:rgba(146,205,236,.15);color:var(--accent);border-color:rgba(146,205,236,.4)}
+.doc-pane{display:none}
+.doc-pane.active{display:block}
 
-    /* NEW: Glass panel container matching other pages */
-    .hero-container {
-      background: var(--glass-panel);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 60px 40px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      max-width: 800px;
-      width: 100%;
-      margin: 0 auto;
-      border: 1px solid rgba(146, 205, 236, 0.2);
-    }
+/* REG-SPECIFIC EXTRAS */
+.gdpr-x,.ccpa-x,.hipaa-x,.popia-x{display:none}
+.gdpr-x.show,.ccpa-x.show,.hipaa-x.show,.popia-x.show{display:block}
 
-    /* Logo animation */
-    .welcome-logo {
-      height: 160px;
-      width: auto;
-      margin-bottom: 40px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 1.2s 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-      filter: brightness(120%);
-    }
+/* ALERT STRIP */
+.astrip{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-radius:10px;font-size:13px;margin-bottom:16px;line-height:1.5}
+.astrip.info{background:rgba(146,205,236,.07);border:1px solid rgba(146,205,236,.2);color:var(--sec)}
+.astrip.ok{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.2);color:var(--success)}
 
-    /* Content container */
-    .hero-content {
-      max-width: 680px;
-      margin: 0 auto;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 1s 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
+/* REVIEW */
+.rev-section{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.rev-head{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--sec);border-bottom:1px solid var(--border)}
+.rev-head button{background:none;border:none;color:var(--accent);font-size:12px;cursor:pointer;font-weight:600}
+.rev-table{width:100%;border-collapse:collapse}
+.rev-table td{padding:10px 16px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.04)}
+.rev-table tr:last-child td{border-bottom:none}
+.rev-table td:first-child{color:var(--sec);width:44%;font-weight:500}
+.rev-table td:last-child{color:var(--txt);font-weight:600}
 
-    .title {
-      font-size: clamp(2.5rem, 5vw, 3.5rem);
-      font-weight: 700;
-      margin-bottom: 20px;
-      background: var(--gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      line-height: 1.2;
-      font-family: 'Playfair Display', serif;
-      text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
+/* GENERATE */
+.gen-center{text-align:center;padding:24px 0}
+.gen-icon{width:72px;height:72px;border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.gen-icon.loading{background:rgba(146,205,236,.1);border:1px solid rgba(146,205,236,.2)}
+.gen-icon.done{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3)}
+.spinner{width:34px;height:34px;border:3px solid rgba(146,205,236,.2);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gen-title{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px}
+.gen-title.ok{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.gen-sub{font-size:14px;color:var(--sec);max-width:400px;margin:0 auto 20px}
+.gen-steps{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.gen-step{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;background:rgba(146,205,236,.1);color:var(--accent);border:1px solid rgba(146,205,236,.2)}
+.email-confirm{display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);border-radius:30px;padding:10px 20px;font-size:13px;color:var(--success);font-weight:600;margin-bottom:22px}
+.upsell{background:rgba(146,205,236,.05);border:1px solid rgba(146,205,236,.18);border-radius:14px;padding:22px;margin-top:24px;text-align:left}
+.upsell h4{font-size:15px;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.upsell p{font-size:13px;color:var(--sec);margin-bottom:14px;line-height:1.65}
+.upsell-btns{display:flex;gap:10px;flex-wrap:wrap}
 
-    .subtitle {
-      font-size: clamp(1.1rem, 2vw, 1.3rem);
-      color: var(--secondary-text);
-      margin-bottom: 40px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.6;
-      opacity: 0.9;
-    }
+/* FREE PLAN USAGE BAR */
+.free-bar{background:rgba(146,205,236,.05);border:1px solid rgba(146,205,236,.15);border-radius:12px;padding:14px 20px;margin-bottom:20px;display:none;}
+.free-bar.show{display:block;}
+.free-bar-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:13px;}
+.free-bar-label{color:var(--sec);}
+.free-bar-count{font-weight:700;color:var(--accent);}
+.free-bar-track{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;}
+.free-bar-fill{height:100%;background:var(--grad);border-radius:3px;transition:width .5s;}
+.free-bar-used{background:rgba(239,68,68,.6)!important;}
+.free-bar-note{font-size:11px;color:var(--sec);margin-top:7px;}
+.free-bar-note a{color:var(--accent);text-decoration:none;}
 
-    /* NEW: Button styles matching other pages */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: var(--gradient);
-      color: var(--button-text);
-      border: none;
-      border-radius: 50px;
-      padding: 18px 45px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 25px rgba(146, 205, 236, 0.3);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 35px rgba(146, 205, 236, 0.4);
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.5s;
-    }
-
-    .btn:hover::before {
-      left: 100%;
-    }
-
-    /* NEW: Security badge matching other pages */
-    .security-badge {
-      position: fixed;
-      bottom: 15px;
-      right: 15px;
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-size: 11px;
-      color: #10b981;
-      z-index: 1000;
-      backdrop-filter: blur(10px);
-      font-weight: 600;
-    }
-
-    /* NEW: Additional badges matching home page */
-    .feature-badges {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin: 35px 0;
-      flex-wrap: wrap;
-    }
-
-    .feature-badge {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--border-color);
-      border-radius: 50px;
-      padding: 12px 22px;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      backdrop-filter: blur(5px);
-      color: var(--secondary-text);
-      transition: all 0.3s ease;
-    }
-
-    .feature-badge:hover {
-      border-color: rgba(146, 205, 236, 0.4);
-      transform: translateY(-2px);
-    }
-
-    .feature-badge svg {
-      width: 16px;
-      height: 16px;
-      fill: var(--accent);
-    }
-
-    /* NEW: Pulse animation for CTA */
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-
-    .pulse {
-      animation: pulse 2s infinite;
-    }
-
-    /* Animations */
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      .welcome-logo {
-        height: 130px;
-        margin-bottom: 30px;
-      }
-      
-      .btn {
-        padding: 16px 35px;
-        font-size: 1rem;
-      }
-      
-      .hero-container {
-        padding: 40px 25px;
-        margin: 15px;
-        border-radius: 16px;
-      }
-      
-      .feature-badges {
-        flex-direction: column;
-        align-items: center;
-        gap: 12px;
-      }
-      
-      .feature-badge {
-        width: 100%;
-        max-width: 280px;
-        justify-content: center;
-        padding: 10px 20px;
-      }
-      
-      .title {
-        font-size: 2.2rem;
-      }
-    }
-
-    .trust-row {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
-      margin-bottom: 36px;
-    }
-
-    .trust-item {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 0.82rem;
-      color: var(--secondary-text);
-      letter-spacing: 0.01em;
-    }
-
-    .trust-item svg {
-      width: 14px;
-      height: 14px;
-      fill: #10b981;
-      flex-shrink: 0;
-    }
-
-    .eyebrow {
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 18px;
-      opacity: 0.9;
-    }
-
-    .reg-pills {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 28px 0 36px;
-    }
-
-    .reg-pill {
-      background: rgba(146, 205, 236, 0.08);
-      border: 1px solid rgba(146, 205, 236, 0.25);
-      border-radius: 50px;
-      padding: 7px 16px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--accent);
-      letter-spacing: 0.05em;
-    }
-
-    .cta-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .cta-sub {
-      font-size: 0.78rem;
-      color: var(--secondary-text);
-      opacity: 0.8;
-      letter-spacing: 0.01em;
-    }
-
-    .secondary-link {
-      font-size: 0.85rem;
-      color: var(--accent);
-      text-decoration: none;
-      opacity: 0.8;
-      border-bottom: 1px solid rgba(146, 205, 236, 0.3);
-      padding-bottom: 1px;
-      transition: opacity 0.2s;
-    }
-
-    .secondary-link:hover {
-      opacity: 1;
-    }
-
-    .divider-dot {
-      color: var(--secondary-text);
-      opacity: 0.4;
-      font-size: 0.7rem;
-    }
-
-    .stat-row {
-      display: flex;
-      justify-content: center;
-      gap: 32px;
-      flex-wrap: wrap;
-      margin: 32px 0 0;
-      padding-top: 28px;
-      border-top: 1px solid rgba(255,255,255,0.07);
-    }
-
-    .stat-item {
-      text-align: center;
-    }
-
-    .stat-val {
-      font-size: 1.4rem;
-      font-weight: 700;
-      background: var(--gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-family: 'Playfair Display', serif;
-      display: block;
-      line-height: 1.2;
-    }
-
-    .stat-lbl {
-      font-size: 0.73rem;
-      color: var(--secondary-text);
-      margin-top: 3px;
-      opacity: 0.8;
-    }
-
-    @media (max-width: 480px) {
-      .trust-row { gap: 14px; }
-      .stat-row { gap: 20px; }
-      .stat-val { font-size: 1.2rem; }
-    }
-  </style>
+footer{padding:28px 20px;text-align:center;font-size:13px;color:#555;border-top:1px solid var(--border)}
+footer a{color:#888;text-decoration:underline;margin:0 8px}
+.sec-badge{position:fixed;bottom:10px;right:10px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:6px;padding:4px 10px;font-size:10px;color:#10b981;z-index:100;display:flex;align-items:center;gap:5px}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:rgba(146,205,236,.25);border-radius:3px}
+</style>
 </head>
 <body>
-  <!-- Animated background particles -->
-  <canvas class="particles" id="particles"></canvas>
 
-  <!-- Main content with glass panel -->
-  <div class="hero-container">
-    <div class="hero-content">
-    <img src="3CH0_logo_transparent_fixed.png" alt="3CH0 Logo" class="welcome-logo">
+<nav>
+  <div><img src="3CH0_logo_transparent_fixed.png" alt="3CH0" class="logo-img"></div>
+  <div style="display:flex;align-items:center;">
+    <a href="home.html">Home</a>
+    <a href="index.html" class="nav-active">Dashboard</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="settings.html">Settings</a>
+    <a href="#start" class="nav-cta" id="hnc">Start Free Check</a>
+  </div>
+</nav>
 
-      <p class="eyebrow">Compliance intelligence for SMEs</p>
+<!-- HERO -->
+<div class="hero" id="top">
+  <div class="hero-badge">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    Compliance Intelligence for International SMEs
+  </div>
+  <h1>Regulations shouldn't stop<br><em>your business from growing.</em></h1>
+  <p>5 quick questions. We detect your applicable laws, then show only the form fields you actually need. Your document lands in your inbox in under 30 seconds.</p>
+  <a class="btn-hero" href="#start" id="hscb">
+    Start My Free Compliance Check
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
+  <div class="trust-row">
+    <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Free first doc</span>
+    <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> No credit card</span>
+    <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Emailed instantly</span>
+  </div>
+</div>
 
-      <h1 class="title">Not sure which laws apply to your business?</h1>
+<!-- FUNNEL -->
 
-      <p class="subtitle">GDPR. POPIA. HIPAA. CCPA. We tell you exactly which ones apply to you, and generate every document you need to fix it. In 5 minutes. Free.</p>
-      <div class="cta-wrapper">
-        <a href="loading.html" class="btn pulse" onclick="window.location.href='loading.html';return false;">
-          Get Started!
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="margin-left:4px"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-        <p class="cta-sub">No credit card &nbsp;·&nbsp; No legal degree &nbsp;·&nbsp; Results in 5 minutes</p>
-        <a href="home.html" class="secondary-link">See how it works first →</a>
+<!-- FREE PLAN USAGE INDICATOR -->
+<div class="funnel" style="padding-bottom:0;margin-bottom:-20px;">
+  <div class="free-bar" id="free-plan-bar">
+    <div class="free-bar-top">
+      <span class="free-bar-label">Free plan: documents used this month</span>
+      <span class="free-bar-count" id="free-bar-count">0 / 1</span>
+    </div>
+    <div class="free-bar-track"><div class="free-bar-fill" id="free-bar-fill" style="width:0%"></div></div>
+    <div class="free-bar-note" id="free-bar-note">1 free document per month. <a href="pricing.html">Upgrade</a> for unlimited access.</div>
+  </div>
+</div>
+
+<br>
+<br>
+
+<div class="funnel" id="start">
+
+  <!-- STEP BAR -->
+  <div class="step-bar">
+    <div class="sn"><div class="sc active" id="sc1">1</div><div class="sl active" id="sl1">Risk Check</div></div>
+    <div class="sline" id="ln1"></div>
+    <div class="sn"><div class="sc" id="sc2">2</div><div class="sl" id="sl2">Your Laws</div></div>
+    <div class="sline" id="ln2"></div>
+    <div class="sn"><div class="sc" id="sc3">3</div><div class="sl" id="sl3">Document</div></div>
+    <div class="sline" id="ln3"></div>
+    <div class="sn"><div class="sc" id="sc4">4</div><div class="sl" id="sl4">Review</div></div>
+    <div class="sline" id="ln4"></div>
+    <div class="sn"><div class="sc" id="sc5">5</div><div class="sl" id="sl5">Generate</div></div>
+  </div>
+
+  <!-- ════ STEP 1: RISK CHECK ════ -->
+  <div class="panel active" id="panel1">
+    <div class="ptitle">Quick Risk Check</div>
+    <div class="psub">5 questions · ~2 minutes · No legal knowledge needed. We work out which laws apply so you don't have to.</div>
+    <div class="fgrid">
+      <div class="fg"><label>Where is your business based?</label>
+        <select id="r-country"><option value="">Select country…</option><option value="ZA">South Africa</option><option value="EU">European Union</option><option value="UK">United Kingdom</option><option value="US">United States</option><option value="OTHER">Other / Multiple</option></select>
       </div>
-
-      <div class="trust-row" style="margin-top:28px;margin-bottom:0">
-        <div class="trust-item">
-          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          Free first check. Always!
-        </div>
-        <div class="trust-item">
-          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          Documents tailored to your business
-        </div>
-        <div class="trust-item">
-          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          Built for 10–200 person teams
-        </div>
+      <div class="fg"><label>What type of business do you run?</label>
+        <select id="r-type"><option value="">Select type…</option><option value="ecommerce">E-commerce / Online retail</option><option value="saas">SaaS / Tech / App</option><option value="healthcare">Healthcare / Medical</option><option value="professional">Professional services</option><option value="finance">Finance / Fintech</option><option value="education">Education</option><option value="ngo">NGO / Non-profit</option><option value="other">Other</option></select>
       </div>
+    </div>
+    <div class="fg">
+      <label>Where are your customers located? <span style="font-weight:400;color:var(--sec);font-size:12px;">(select all that apply)</span></label>
+      <div class="cb-grid">
+        <label class="cb-item"><input type="checkbox" id="c-za"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#92cdec" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>South Africa</span></label>
+        <label class="cb-item"><input type="checkbox" id="c-eu"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#92cdec" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>European Union / UK</span></label>
+        <label class="cb-item"><input type="checkbox" id="c-us"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#92cdec" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>United States / California</span></label>
+        <label class="cb-item"><input type="checkbox" id="c-other"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#92cdec" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Other international</span></label>
+      </div>
+    </div>
+    <div class="fgrid">
+      <div class="fg"><label>Do you collect personal data?</label>
+        <select id="r-data"><option value="">Select…</option><option value="yes">Yes — names, emails, IDs</option><option value="sensitive">Yes — including health / financial</option><option value="no">No personal data collected</option></select>
+      </div>
+      <div class="fg"><label>How many people on your team?</label>
+        <select id="r-size"><option value="">Select…</option><option value="solo">Solo / Freelancer</option><option value="small">2–10 employees</option><option value="medium">11–50 employees</option><option value="growing">51–200 employees</option><option value="large">200+ employees</option></select>
+      </div>
+    </div>
+    <div class="step-nav">
+      <span style="font-size:13px;color:var(--sec);">Step 1 of 5 · Under 2 minutes</span>
+      <button class="btn" type="button" id="btn-s1">See My Applicable Laws <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+    </div>
+  </div>
 
-      <div class="stat-row">
-        <div class="stat-item">
-          <span class="stat-val">5 min</span>
-          <div class="stat-lbl">Average check time</div>
+  <!-- ════ STEP 2: REGULATIONS ════ -->
+  <div class="panel" id="panel2">
+    <div class="ptitle">Your Applicable Laws</div>
+    <div class="psub" id="reg-intro">Based on your answers, these regulations apply. Select which ones to get compliant with today.</div>
+    <div class="reg-grid">
+      <div class="reg-card" id="rc-popia"><div class="chk">✓</div><div class="reg-name">POPIA</div><div class="reg-sub">Protection of Personal Information Act · South Africa</div><div class="reg-body">Required for any business handling personal data of SA residents.</div><span class="reg-badge yes" id="rb-popia">Applies to your business</span></div>
+      <div class="reg-card" id="rc-gdpr"><div class="chk">✓</div><div class="reg-name">GDPR</div><div class="reg-sub">General Data Protection Regulation · EU &amp; UK</div><div class="reg-body">Applies if you have any EU or UK customers, regardless of where you're based.</div><span class="reg-badge maybe" id="rb-gdpr">Not detected — optional</span></div>
+      <div class="reg-card" id="rc-ccpa"><div class="chk">✓</div><div class="reg-name">CCPA</div><div class="reg-sub">California Consumer Privacy Act · USA</div><div class="reg-body">Applies if you serve California residents. CCPA 2026 now fully in force.</div><span class="reg-badge maybe" id="rb-ccpa">Not detected — optional</span></div>
+      <div class="reg-card" id="rc-hipaa"><div class="chk">✓</div><div class="reg-name">HIPAA</div><div class="reg-sub">Health Insurance Portability Act · US Healthcare</div><div class="reg-body">Required if you handle Protected Health Information (PHI).</div><span class="reg-badge maybe" id="rb-hipaa">Not detected — optional</span></div>
+    </div>
+    <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Select any regulation you want to cover — even if we didn't detect it. Useful if you're planning to expand internationally.</span></div>
+    <div class="step-nav">
+      <button class="btn-ghost" type="button" id="btn-s2-back">← Back</button>
+      <button class="btn" type="button" id="btn-s2">Choose My Document <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ════ STEP 3: FULL MAKE WEBHOOK FORM ════ -->
+  <div class="panel" id="panel3">
+    <div class="ptitle">Build Your Document</div>
+    <div class="psub">Select the document you need. We show only the fields relevant to that document and your detected regulations.</div>
+
+    <!-- DOC TABS (populated by JS) -->
+    <div class="doc-tabs" id="doc-tabs"></div>
+
+    <!-- THE ACTUAL MAKE WEBHOOK FORM -->
+    <form id="ComplianceFormWebhook" action="https://hook.us2.make.com/rxu5mdjft2evqirbr9w1rvcqlkvnxslu" method="POST">
+      <input type="hidden" name="form-name" value="ComplianceFormWebhook">
+      <input type="hidden" name="csrf_token" id="csrf_token" value="">
+      <input type="hidden" name="risk_country" id="hid-country" value="">
+      <input type="hidden" name="risk_type" id="hid-type" value="">
+      <input type="hidden" name="risk_customers" id="hid-customers" value="">
+      <input type="hidden" name="risk_data" id="hid-data" value="">
+      <input type="hidden" name="risk_size" id="hid-size" value="">
+      <input type="hidden" name="selected_regulations" id="hid-regs" value="">
+      <input type="hidden" name="selected_document_tab" id="hid-doc" value="">
+      <div style="display:none"><input type="text" name="website" autocomplete="off"></div>
+      
+      <!-- ═══ PANE: PRIVACY POLICY ═══ -->
+      <div class="doc-pane active" id="dpane-privacy">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg><span><strong>Privacy Policy</strong> — Required by all major regulations. Emailed in under 30 seconds.</span></div>
+        
+<div class="sdiv">Company Information</div>
+<div class="fgrid">
+  <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. Acme Pty Ltd"></div>
+  <div class="fg"><label><span class="req">*</span>Company website</label><input type="url" name="website_url" placeholder="https://yoursite.co.za"></div>
+</div>
+<div class="fgrid">
+  <div class="fg"><label><span class="req">*</span>Contact email</label><input type="email" name="email" placeholder="info@yourcompany.co.za"></div>
+  <div class="fg"><label><span class="req">*</span>Business phone</label><input type="tel" name="phone_number" placeholder="+27 11 000 0000"></div>
+</div>
+<div class="fgrid">
+  <div class="fg"><label><span class="req">*</span>Company address</label><input type="text" name="company_address" placeholder="123 Main St, Johannesburg"></div>
+  <div class="fg"><label>Registration number<span class="opt">Optional</span></label><input type="text" name="company_registration" placeholder="e.g. 2020/123456/07"></div>
+</div>
+<div class="fgrid">
+  <div class="fg"><label><span class="req">*</span>Industry</label><select name="industry"><option value="">Select…</option><option value="SaaS / Technology">SaaS / Technology</option><option value="FinTech / Financial Services">FinTech / Financial Services</option><option value="E-Commerce / Retail">E-Commerce / Retail</option><option value="HealthTech / Healthcare">HealthTech / Healthcare</option><option value="EdTech / Education">EdTech / Education</option><option value="Legal Services">Legal Services</option><option value="Insurance">Insurance</option><option value="Real Estate">Real Estate</option><option value="Non-Profit">Non-Profit</option><option value="Other">Other</option></select></div>
+  <div class="fg"><label><span class="req">*</span>Primary business location</label><input type="text" name="location" placeholder="e.g. Johannesburg, South Africa"></div>
+</div>
+        
+<div class="sdiv">Officers & Signatories</div>
+<div class="fgrid">
+  <div class="fg"><label>Privacy Officer<span class="opt">Optional</span></label><input type="text" name="privacy_officer" placeholder="Name — or Founder if none"></div>
+  <div class="fg"><label>Data Protection Officer<span class="opt">Optional</span></label><input type="text" name="dpo_name" placeholder="Leave blank if none"></div>
+</div>
+<div class="fgrid">
+  <div class="fg"><label>Security Officer<span class="opt">Optional</span></label><input type="text" name="security_officer" placeholder="Name — or IT lead"></div>
+  <div class="fg"><label>Security Officer email<span class="opt">Optional</span></label><input type="email" name="security_officer_email" placeholder="security@company.com"></div>
+</div>
+<div class="fgrid">
+  <div class="fg"><label>Trainer name<span class="opt">Optional</span></label><input type="text" name="trainer_name" placeholder="Person running training sessions"></div>
+  <div class="fg"><label><span class="req">*</span>Authorised signatory</label><input type="text" name="authorized_signatory" placeholder="Person authorised to sign"></div>
+</div>
+<div class="fgrid">
+  <div class="fg"><label><span class="req">*</span>Signatory title</label><input type="text" name="signatory_title" placeholder="e.g. CEO, Director"></div>
+  <div class="fg"><label>Signatory position<span class="opt">Optional</span></label><input type="text" name="signatory_position" placeholder="e.g. Director"></div>
+</div>
+        
+<div class="sdiv">Data & Processing</div>
+<div class="fg"><label><span class="req">*</span>Personal data you collect</label><textarea name="data" placeholder="e.g. names, emails, phone numbers, IP addresses"></textarea></div>
+<div class="fg"><label><span class="req">*</span>Third-party tools / platforms used</label><textarea name="thirdparty" placeholder="e.g. Google Analytics, Stripe, AWS, Mailchimp"></textarea></div>
+<div class="fg"><label>Primary service provider<span class="opt">Optional</span></label><input type="text" name="service_provider_name" placeholder="e.g. AWS, Google Cloud, Stripe"></div>
+<div class="fgrid">
+  <div class="fg"><label>Data retention period</label><select name="retention_period"><option value="">Select…</option><option value="1-3 years">1-3 years</option><option value="3-5 years">3-5 years</option><option value="5-7 years">5-7 years</option><option value="7+ years">7+ years</option><option value="Until deletion requested">Until deletion requested</option></select></div>
+  <div class="fg"><label>Regulation (primary)</label><select name="regulations"><option value="">Select…</option><option value="POPIA">POPIA (South Africa)</option><option value="GDPR">GDPR (EU)</option><option value="CCPA">CCPA/CPRA (California)</option><option value="HIPAA">HIPAA (US Healthcare)</option><option value="Multiple / Global">Multiple / Global</option></select></div>
+</div>
+        <div class="sdiv">Data Categories & Subjects</div>
+        <div class="fg"><label>Categories of personal data processed</label><div class="cb-grid">
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="contact_info"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Contact information</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="financial"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Financial data</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="health"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Health data</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="location"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Location data</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="online_identifiers"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Online identifiers (IPs, cookies)</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="biometric"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Biometric data</span></label>
+        </div></div>
+        <div class="fg"><label>Who are your data subjects?</label><div class="cb-grid">
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="customers"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Customers</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="employees"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Employees</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="website_visitors"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Website visitors</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="prospects"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Prospects / Leads</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="suppliers"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Suppliers / Vendors</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="minors"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Minors (under 18)</span></label>
+        </div></div>
+        <div class="fg"><label>Security measures in place</label><div class="cb-grid">
+          <label class="cb-item"><input type="checkbox" name="security_measures[]" value="encryption"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Data encryption</span></label>
+          <label class="cb-item"><input type="checkbox" name="security_measures[]" value="access_controls"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Access controls</span></label>
+          <label class="cb-item"><input type="checkbox" name="security_measures[]" value="training"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Employee training</span></label>
+          <label class="cb-item"><input type="checkbox" name="security_measures[]" value="backups"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Regular backups</span></label>
+          <label class="cb-item"><input type="checkbox" name="security_measures[]" value="mfa"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Multi-factor auth (MFA)</span></label>
+          <label class="cb-item"><input type="checkbox" name="security_measures[]" value="monitoring"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Security monitoring</span></label>
+        </div></div>
+        <!-- GDPR extras -->
+        <div class="gdpr-x">
+          <div class="sdiv">GDPR-specific</div>
+          <div class="fgrid">
+            <div class="fg"><label>Legal basis for processing (Art. 6)</label><select name="legal_basis"><option value="">Select…</option><option value="consent">Consent (Art. 6(1)(a))</option><option value="contract">Contract Performance (Art. 6(1)(b))</option><option value="legal_obligation">Legal Obligation (Art. 6(1)(c))</option><option value="legitimate_interests">Legitimate Interests (Art. 6(1)(f))</option><option value="multiple">Multiple Legal Bases</option></select></div>
+            <div class="fg"><label>Automated decision-making (Art. 22)?</label><select name="automated_decisions"><option value="">Select…</option><option value="yes">Yes</option><option value="no">No</option></select></div>
+          </div>
+          <div class="fgrid">
+            <div class="fg"><label>International data transfers</label><select name="international_transfers"><option value="">Select…</option><option value="no">No international transfers</option><option value="within_eea">Within EEA only</option><option value="outside_eea">Outside EEA</option></select></div>
+            <div class="fg"><label>Transfer safeguards</label><select name="transfer_safeguards"><option value="">Select…</option><option value="adequacy_decision">Adequacy Decision</option><option value="sccs">Standard Contractual Clauses (SCCs)</option><option value="bcrs">Binding Corporate Rules</option><option value="not_applicable">Not Applicable</option></select></div>
+          </div>
+          <div class="fg"><label>Transfer countries<span class="opt">Optional</span></label><input type="text" name="transfer_countries" placeholder="e.g. USA, Germany, UK"></div>
+          <div class="fg"><label>Processing purposes</label><div class="cb-grid">
+            <label class="cb-item"><input type="checkbox" name="processing_purposes[]" value="service_delivery"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Service delivery</span></label>
+            <label class="cb-item"><input type="checkbox" name="processing_purposes[]" value="marketing"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Marketing</span></label>
+            <label class="cb-item"><input type="checkbox" name="processing_purposes[]" value="analytics"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Analytics</span></label>
+            <label class="cb-item"><input type="checkbox" name="processing_purposes[]" value="legal_compliance"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Legal compliance</span></label>
+            <label class="cb-item"><input type="checkbox" name="processing_purposes[]" value="employment"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Employment</span></label>
+            <label class="cb-item"><input type="checkbox" name="processing_purposes[]" value="other"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Other</span></label>
+          </div></div>
         </div>
-        <div class="stat-item">
-          <span class="stat-val">4 laws</span>
-          <div class="stat-lbl">Covered simultaneously</div>
+        <!-- POPIA extras -->
+        <div class="popia-x">
+          <div class="sdiv">POPIA-specific</div>
+          <div class="fgrid">
+            <div class="fg"><label><span class="req">*</span>Information Officer name</label><input type="text" name="information_officer" placeholder="Full name"></div>
+            <div class="fg"><label><span class="req">*</span>Information Officer email</label><input type="email" name="information_officer_email" placeholder="io@company.co.za"></div>
+          </div>
+          <div class="fgrid">
+            <div class="fg"><label>Deputy Information Officer<span class="opt">Optional</span></label><input type="text" name="deputy_information_officer" placeholder="Name (if any)"></div>
+            <div class="fg"><label>Deputy department<span class="opt">Optional</span></label><input type="text" name="deputy_information_officer_department" placeholder="e.g. Operations"></div>
+          </div>
+          <div class="fgrid">
+            <div class="fg"><label>Cross-border transfers?</label><select name="cross_border"><option value="">Select…</option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+            <div class="fg"><label>Transfer recipient countries<span class="opt">Optional</span></label><input type="text" name="recipient_countries" placeholder="e.g. USA, Germany"></div>
+          </div>
         </div>
-        <div class="stat-item">
-          <span class="stat-val">$0</span>
-          <div class="stat-lbl">To get started</div>
+        <!-- CCPA extras -->
+        <div class="ccpa-x">
+          <div class="sdiv">CCPA-specific</div>
+          <div class="fgrid">
+            <div class="fg"><label>Toll-free phone (CCPA required)</label><input type="tel" name="ccpa_tollfree" placeholder="1-800-XXX-XXXX"></div>
+            <div class="fg"><label>Consumer request web form URL</label><input type="url" name="ccpa_webform_url" placeholder="https://yoursite.com/privacy-request"></div>
+          </div>
+          <div class="fgrid">
+            <div class="fg"><label>Do you SELL personal information?</label><select name="ccpa_sell"><option value="">Select…</option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+            <div class="fg"><label>Do you SHARE for targeted ads?</label><select name="ccpa_share"><option value="">Select…</option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+          </div>
+        </div>
+        <!-- HIPAA extras -->
+        <div class="hipaa-x">
+          <div class="sdiv">HIPAA-specific</div>
+          <div class="fgrid">
+            <div class="fg"><label>Covered entity type</label><select name="covered_entity_type"><option value="">Select…</option><option value="Health Plan">Health Plan</option><option value="Healthcare Provider">Healthcare Provider</option><option value="Healthcare Clearinghouse">Healthcare Clearinghouse</option><option value="Business Associate">Business Associate</option></select></div>
+            <div class="fg"><label>PHI types handled</label><input type="text" name="phi_types" placeholder="e.g. medical records, lab results"></div>
+          </div>
+          <div class="fg"><label>Business associates / vendors<span class="opt">Optional</span></label><input type="text" name="business_associates" placeholder="e.g. Stripe, Epic, AWS"></div>
+        </div>
+        <div class="sdiv">Document Selection & Delivery</div>
+        <div class="fg"><label><span class="req">*</span>Which document do you need?</label><select name="docs"><option value="">Select document…</option><option value="Privacy Policy">Privacy Policy</option><option value="GDPR - Privacy Policy">GDPR Privacy Policy</option><option value="CCPA - Privacy Policy">CCPA Privacy Policy</option><option value="HIPAA - Privacy Policy">HIPAA Privacy Policy</option></select></div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <div class="fg"><label>Additional notes<span class="opt">Optional</span></label><textarea name="description" placeholder="Any specific requirements or context…"></textarea></div>
+      </div>
+      <!-- ═══ PANE: DATA PROCESSING AGREEMENT ═══ -->
+      <div class="doc-pane" id="dpane-dpa">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><span><strong>Data Processing Agreement</strong> — Required for every vendor who processes data on your behalf. GDPR Art. 28, POPIA, CCPA all mandate this.</span></div>
+        <div class="sdiv">Data Controller (Your Business)</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Controller company name</label><input type="text" name="company" placeholder="Your company name"></div>
+          <div class="fg"><label><span class="req">*</span>Contact email</label><input type="email" name="email" placeholder="info@yourcompany.co.za"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company address</label><input type="text" name="company_address" placeholder="Full address"></div>
+          <div class="fg"><label>Registration number<span class="opt">Optional</span></label><input type="text" name="company_registration" placeholder="e.g. 2020/123456/07"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Authorised signatory</label><input type="text" name="authorized_signatory" placeholder="CEO / Director name"></div>
+          <div class="fg"><label><span class="req">*</span>Signatory title</label><input type="text" name="signatory_title" placeholder="e.g. CEO, Director"></div>
+        </div>
+        <div class="sdiv">Data Processor (The Vendor)</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Processor / vendor name</label><input type="text" name="service_provider_name" placeholder="e.g. Stripe, Google, AWS"></div>
+          <div class="fg"><label>Processor address<span class="opt">Optional</span></label><input type="text" name="service_provider_address" placeholder="Full address"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Processor contact person<span class="opt">Optional</span></label><input type="text" name="service_provider_contact" placeholder="Contact name"></div>
+          <div class="fg"><label>Processor email<span class="opt">Optional</span></label><input type="email" name="operator_email" placeholder="privacy@vendor.com"></div>
+        </div>
+        <div class="sdiv">Processing Details</div>
+        <div class="fg"><label><span class="req">*</span>Purpose of data processing</label><textarea name="processing_purpose" placeholder="e.g. Payment processing, email marketing, cloud hosting"></textarea></div>
+        <div class="fg"><label><span class="req">*</span>Personal data processed</label><textarea name="data" placeholder="e.g. names, emails, payment data"></textarea></div>
+        <div class="fgrid">
+          <div class="fg"><label>Nature of processing<span class="opt">Optional</span></label><input type="text" name="processing_nature" placeholder="e.g. Storage, analysis, transmission"></div>
+          <div class="fg"><label>Processing duration<span class="opt">Optional</span></label><input type="text" name="processing_duration" placeholder="e.g. Duration of service agreement"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Breach notification timeframe (hours)<span class="opt">Optional</span></label><input type="number" name="breach_notification_hours" placeholder="e.g. 72"></div>
+          <div class="fg"><label>Approved sub-processors<span class="opt">Optional</span></label><input type="text" name="approved_sub_operators" placeholder="e.g. Twilio, SendGrid"></div>
+        </div>
+        <div class="fg"><label>Data categories processed</label><div class="cb-grid">
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="contact_info"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Contact details</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="financial"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Payment / financial data</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="health"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Health records</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="biometric"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Biometric data</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="online_identifiers"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Behavioural / online data</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="location"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Location data</span></label>
+        </div></div>
+        <!-- POPIA DPA extras -->
+        <div class="popia-x">
+          <div class="sdiv">POPIA — Operator Details</div>
+          <div class="fgrid">
+            <div class="fg"><label><span class="req">*</span>Information Officer</label><input type="text" name="information_officer" placeholder="Full name"></div>
+            <div class="fg"><label><span class="req">*</span>Information Officer email</label><input type="email" name="information_officer_email" placeholder="io@company.co.za"></div>
+          </div>
+          <div class="fgrid">
+            <div class="fg"><label>Cross-border transfers?</label><select name="cross_border"><option value="">Select…</option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+            <div class="fg"><label>Transfer mechanism<span class="opt">Optional</span></label><input type="text" name="transfer_mechanism" placeholder="e.g. SCCs, adequacy decision"></div>
+          </div>
+          <div class="fg"><label>Approved transfer countries<span class="opt">Optional</span></label><input type="text" name="approved_transfer_countries" placeholder="e.g. USA, Ireland"></div>
+        </div>
+        <!-- GDPR DPA extras -->
+        <div class="gdpr-x">
+          <div class="sdiv">GDPR — Article 28 fields</div>
+          <div class="fgrid">
+            <div class="fg"><label>International data transfers</label><select name="international_transfers"><option value="">Select…</option><option value="no">No international transfers</option><option value="within_eea">Within EEA only</option><option value="outside_eea">Outside EEA</option></select></div>
+            <div class="fg"><label>Transfer countries<span class="opt">Optional</span></label><input type="text" name="transfer_countries" placeholder="e.g. USA, Switzerland"></div>
+          </div>
+          <div class="fg"><label>Data subjects categories<span class="opt">Optional</span></label><input type="text" name="data_subjects" placeholder="e.g. customers, employees, website visitors"></div>
+          <div class="fg"><label>Processing purposes<span class="opt">Optional</span></label><textarea name="processing_purposes" placeholder="e.g. service delivery, analytics"></textarea></div>
+        </div>
+        <div class="sdiv">Document Selection & Delivery</div>
+        <div class="fg"><label><span class="req">*</span>Which document do you need?</label><select name="docs"><option value="">Select document…</option><option value="Data Processing Agreement">Data Processing Agreement</option><option value="POPIA - Data Processing Agreement">POPIA Data Processing Agreement</option><option value="GDPR - Data Processing Agreement">GDPR Data Processing Agreement</option><option value="CCPA - Data Processing Agreement">CCPA Service Provider Agreement</option></select></div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+      </div>
+      <!-- ═══ PANE: EMPLOYEE TRAINING SCRIPT ═══ -->
+      <div class="doc-pane" id="dpane-training">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span><strong>Employee Training Script</strong> — Keeps your team up to date on their data protection obligations. Required by POPIA, GDPR Art. 39, HIPAA, and CCPA.</span></div>
+        
+<div class="sdiv">Company Information</div>
+<div class="fgrid">
+  <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. Acme Pty Ltd"></div>
+  <div class="fg"><label><span class="req">*</span>Company website</label><input type="url" name="website_url" placeholder="https://yoursite.co.za"></div>
+</div>
+<div class="fgrid">
+  <div class="fg"><label><span class="req">*</span>Contact email</label><input type="email" name="email" placeholder="info@yourcompany.co.za"></div>
+  <div class="fg"><label><span class="req">*</span>Business phone</label><input type="tel" name="phone_number" placeholder="+27 11 000 0000"></div>
+</div>
+<div class="fgrid">
+  <div class="fg"><label><span class="req">*</span>Company address</label><input type="text" name="company_address" placeholder="123 Main St, Johannesburg"></div>
+  <div class="fg"><label>Registration number<span class="opt">Optional</span></label><input type="text" name="company_registration" placeholder="e.g. 2020/123456/07"></div>
+</div>
+<div class="fgrid">
+  <div class="fg"><label><span class="req">*</span>Industry</label><select name="industry"><option value="">Select…</option><option value="SaaS / Technology">SaaS / Technology</option><option value="FinTech / Financial Services">FinTech / Financial Services</option><option value="E-Commerce / Retail">E-Commerce / Retail</option><option value="HealthTech / Healthcare">HealthTech / Healthcare</option><option value="EdTech / Education">EdTech / Education</option><option value="Legal Services">Legal Services</option><option value="Insurance">Insurance</option><option value="Real Estate">Real Estate</option><option value="Non-Profit">Non-Profit</option><option value="Other">Other</option></select></div>
+  <div class="fg"><label><span class="req">*</span>Primary business location</label><input type="text" name="location" placeholder="e.g. Johannesburg, South Africa"></div>
+</div>
+        <div class="sdiv">Training Coordinator</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Trainer name</label><input type="text" name="trainer_name" placeholder="Person conducting training"></div>
+          <div class="fg"><label><span class="req">*</span>Privacy Officer</label><input type="text" name="privacy_officer" placeholder="Data privacy point of contact"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Security Officer<span class="opt">Optional</span></label><input type="text" name="security_officer" placeholder="Security point of contact"></div>
+          <div class="fg"><label>Training frequency</label><select name="training_frequency"><option value="">Select…</option><option value="Annual">Annual</option><option value="Bi-annual">Bi-annual</option><option value="Quarterly">Quarterly</option><option value="On hire + annual">On hire + annual</option></select></div>
+        </div>
+        <div class="fg"><label><span class="req">*</span>Personal data your business handles</label><textarea name="data" placeholder="e.g. names, emails, payment data, health records"></textarea></div>
+        <div class="fg"><label>Third-party tools used<span class="opt">Optional</span></label><textarea name="thirdparty" placeholder="e.g. Google Analytics, Stripe, Mailchimp"></textarea></div>
+        <!-- POPIA training extras -->
+        <div class="popia-x">
+          <div class="sdiv">POPIA — Training specifics</div>
+          <div class="fgrid">
+            <div class="fg"><label><span class="req">*</span>Information Officer</label><input type="text" name="information_officer" placeholder="Full name"></div>
+            <div class="fg"><label><span class="req">*</span>Information Officer email</label><input type="email" name="information_officer_email" placeholder="io@company.co.za"></div>
+          </div>
+          <div class="fgrid">
+            <div class="fg"><label>Deputy Information Officer<span class="opt">Optional</span></label><input type="text" name="deputy_information_officer" placeholder="Name (if any)"></div>
+            <div class="fg"><label>Deputy department<span class="opt">Optional</span></label><input type="text" name="deputy_information_officer_department" placeholder="e.g. Operations"></div>
+          </div>
+          <div class="fgrid">
+            <div class="fg"><label>Direct marketing practices?</label><select name="direct_marketing"><option value="">Select…</option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+            <div class="fg"><label>Automated decisions?</label><select name="automated_decisions"><option value="">Select…</option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+          </div>
+          <div class="fgrid">
+            <div class="fg"><label>Children's data collected?</label><select name="children_data"><option value="">Select…</option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+            <div class="fg"><label>Special (sensitive) data?</label><select name="special_data"><option value="">Select…</option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+          </div>
+        </div>
+        <!-- GDPR training extras -->
+        <div class="gdpr-x">
+          <div class="sdiv">GDPR — Training specifics</div>
+          <div class="fgrid">
+            <div class="fg"><label>DPO name<span class="opt">Optional</span></label><input type="text" name="dpo_name" placeholder="Data Protection Officer"></div>
+            <div class="fg"><label>International transfers?</label><select name="international_transfers"><option value="">Select…</option><option value="no">No</option><option value="within_eea">Within EEA only</option><option value="outside_eea">Outside EEA</option></select></div>
+          </div>
+          <div class="fg"><label>Security measures<span class="opt">Optional</span></label><textarea name="security_measures" placeholder="e.g. encryption, access controls"></textarea></div>
+        </div>
+        <!-- HIPAA training extras -->
+        <div class="hipaa-x">
+          <div class="sdiv">HIPAA — Training specifics</div>
+          <div class="fgrid">
+            <div class="fg"><label>Covered entity type</label><select name="covered_entity_type"><option value="">Select…</option><option value="Health Plan">Health Plan</option><option value="Healthcare Provider">Healthcare Provider</option><option value="Healthcare Clearinghouse">Healthcare Clearinghouse</option><option value="Business Associate">Business Associate</option></select></div>
+            <div class="fg"><label><span class="req">*</span>PHI types handled</label><input type="text" name="phi_types" placeholder="e.g. medical records, lab results"></div>
+          </div>
+          <div class="fg"><label>Business associates<span class="opt">Optional</span></label><input type="text" name="business_associates" placeholder="e.g. Stripe, Epic, AWS"></div>
+        </div>
+        <!-- CCPA training extras -->
+        <div class="ccpa-x">
+          <div class="sdiv">CCPA — Training specifics</div>
+          <div class="fgrid">
+            <div class="fg"><label>Do you sell personal data?</label><select name="sell_data"><option value="">Select…</option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+            <div class="fg"><label>Primary service provider<span class="opt">Optional</span></label><input type="text" name="service_provider_name" placeholder="e.g. Stripe, Shopify"></div>
+          </div>
+        </div>
+        <div class="sdiv">Document Selection & Delivery</div>
+        <div class="fg"><label><span class="req">*</span>Which document do you need?</label><select name="docs"><option value="">Select document…</option><option value="Employee Training Script">Employee Training Script</option><option value="POPIA - Employee Training">POPIA Employee Training Script</option><option value="GDPR - Employee Training">GDPR Employee Training Script</option><option value="HIPAA - Employee Training">HIPAA Employee Training Script</option><option value="CCPA - Employee Training">CCPA Employee Training Script</option></select></div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+      </div>
+      <!-- ═══ PANE: AUDIT-READY DOCUMENTATION ═══ -->
+      <div class="doc-pane" id="dpane-audit">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span><strong>Audit-Ready Documentation</strong> — A comprehensive compliance evidence package ready for regulatory inspection.</span></div>
+        
+<div class="sdiv">Company Information</div>
+<div class="fgrid">
+  <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. Acme Pty Ltd"></div>
+  <div class="fg"><label><span class="req">*</span>Company website</label><input type="url" name="website_url" placeholder="https://yoursite.co.za"></div>
+</div>
+<div class="fgrid">
+  <div class="fg"><label><span class="req">*</span>Contact email</label><input type="email" name="email" placeholder="info@yourcompany.co.za"></div>
+  <div class="fg"><label><span class="req">*</span>Business phone</label><input type="tel" name="phone_number" placeholder="+27 11 000 0000"></div>
+</div>
+<div class="fgrid">
+  <div class="fg"><label><span class="req">*</span>Company address</label><input type="text" name="company_address" placeholder="123 Main St, Johannesburg"></div>
+  <div class="fg"><label>Registration number<span class="opt">Optional</span></label><input type="text" name="company_registration" placeholder="e.g. 2020/123456/07"></div>
+</div>
+<div class="fgrid">
+  <div class="fg"><label><span class="req">*</span>Industry</label><select name="industry"><option value="">Select…</option><option value="SaaS / Technology">SaaS / Technology</option><option value="FinTech / Financial Services">FinTech / Financial Services</option><option value="E-Commerce / Retail">E-Commerce / Retail</option><option value="HealthTech / Healthcare">HealthTech / Healthcare</option><option value="EdTech / Education">EdTech / Education</option><option value="Legal Services">Legal Services</option><option value="Insurance">Insurance</option><option value="Real Estate">Real Estate</option><option value="Non-Profit">Non-Profit</option><option value="Other">Other</option></select></div>
+  <div class="fg"><label><span class="req">*</span>Primary business location</label><input type="text" name="location" placeholder="e.g. Johannesburg, South Africa"></div>
+</div>
+        
+<div class="sdiv">Officers & Signatories</div>
+<div class="fgrid">
+  <div class="fg"><label>Privacy Officer<span class="opt">Optional</span></label><input type="text" name="privacy_officer" placeholder="Name — or Founder if none"></div>
+  <div class="fg"><label>Data Protection Officer<span class="opt">Optional</span></label><input type="text" name="dpo_name" placeholder="Leave blank if none"></div>
+</div>
+<div class="fgrid">
+  <div class="fg"><label>Security Officer<span class="opt">Optional</span></label><input type="text" name="security_officer" placeholder="Name — or IT lead"></div>
+  <div class="fg"><label>Security Officer email<span class="opt">Optional</span></label><input type="email" name="security_officer_email" placeholder="security@company.com"></div>
+</div>
+<div class="fgrid">
+  <div class="fg"><label>Trainer name<span class="opt">Optional</span></label><input type="text" name="trainer_name" placeholder="Person running training sessions"></div>
+  <div class="fg"><label><span class="req">*</span>Authorised signatory</label><input type="text" name="authorized_signatory" placeholder="Person authorised to sign"></div>
+</div>
+<div class="fgrid">
+  <div class="fg"><label><span class="req">*</span>Signatory title</label><input type="text" name="signatory_title" placeholder="e.g. CEO, Director"></div>
+  <div class="fg"><label>Signatory position<span class="opt">Optional</span></label><input type="text" name="signatory_position" placeholder="e.g. Director"></div>
+</div>
+        
+<div class="sdiv">Data & Processing</div>
+<div class="fg"><label><span class="req">*</span>Personal data you collect</label><textarea name="data" placeholder="e.g. names, emails, phone numbers, IP addresses"></textarea></div>
+<div class="fg"><label><span class="req">*</span>Third-party tools / platforms used</label><textarea name="thirdparty" placeholder="e.g. Google Analytics, Stripe, AWS, Mailchimp"></textarea></div>
+<div class="fg"><label>Primary service provider<span class="opt">Optional</span></label><input type="text" name="service_provider_name" placeholder="e.g. AWS, Google Cloud, Stripe"></div>
+<div class="fgrid">
+  <div class="fg"><label>Data retention period</label><select name="retention_period"><option value="">Select…</option><option value="1-3 years">1-3 years</option><option value="3-5 years">3-5 years</option><option value="5-7 years">5-7 years</option><option value="7+ years">7+ years</option><option value="Until deletion requested">Until deletion requested</option></select></div>
+  <div class="fg"><label>Regulation (primary)</label><select name="regulations"><option value="">Select…</option><option value="POPIA">POPIA (South Africa)</option><option value="GDPR">GDPR (EU)</option><option value="CCPA">CCPA/CPRA (California)</option><option value="HIPAA">HIPAA (US Healthcare)</option><option value="Multiple / Global">Multiple / Global</option></select></div>
+</div>
+        <div class="sdiv">Data Categories & Subjects</div>
+        <div class="fg"><label>Data subject categories</label><div class="cb-grid">
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="customers"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Customers</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="employees"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Employees</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="website_visitors"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Website visitors</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="prospects"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Prospects</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="suppliers"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Suppliers / Vendors</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="minors"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Minors (under 18)</span></label>
+        </div></div>
+        <div class="fg"><label>Security measures</label><div class="cb-grid">
+          <label class="cb-item"><input type="checkbox" name="security_measures[]" value="encryption"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Data encryption</span></label>
+          <label class="cb-item"><input type="checkbox" name="security_measures[]" value="access_controls"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Access controls</span></label>
+          <label class="cb-item"><input type="checkbox" name="security_measures[]" value="training"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Employee training</span></label>
+          <label class="cb-item"><input type="checkbox" name="security_measures[]" value="backups"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Regular backups</span></label>
+          <label class="cb-item"><input type="checkbox" name="security_measures[]" value="mfa"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Multi-factor auth</span></label>
+          <label class="cb-item"><input type="checkbox" name="security_measures[]" value="monitoring"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Security monitoring</span></label>
+        </div></div>
+        <!-- POPIA audit extras -->
+        <div class="popia-x">
+          <div class="sdiv">POPIA Audit Specifics</div>
+          <div class="fgrid">
+            <div class="fg"><label><span class="req">*</span>Information Officer</label><input type="text" name="information_officer" placeholder="Full name"></div>
+            <div class="fg"><label><span class="req">*</span>Information Officer email</label><input type="email" name="information_officer_email" placeholder="io@company.co.za"></div>
+          </div>
+          <div class="fgrid">
+            <div class="fg"><label>Last audit date<span class="opt">Optional</span></label><input type="date" name="last_audit_date" placeholder=""></div>
+            <div class="fg"><label>Last training date<span class="opt">Optional</span></label><input type="date" name="last_training_date" placeholder=""></div>
+          </div>
+          <div class="fgrid">
+            <div class="fg"><label>PAIA Manual published?</label><select name="paia_manual"><option value="">Select…</option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+            <div class="fg"><label>Prior authorisation applications<span class="opt">Optional</span></label><input type="text" name="prior_auth_applications" placeholder="Number or description"></div>
+          </div>
+        </div>
+        <!-- GDPR audit extras -->
+        <div class="gdpr-x">
+          <div class="sdiv">GDPR Audit Specifics</div>
+          <div class="fgrid">
+            <div class="fg"><label>DPO name<span class="opt">Optional</span></label><input type="text" name="dpo_name" placeholder="Data Protection Officer"></div>
+            <div class="fg"><label>International transfers</label><select name="international_transfers"><option value="">Select…</option><option value="no">No</option><option value="within_eea">Within EEA only</option><option value="outside_eea">Outside EEA</option></select></div>
+          </div>
+          <div class="fgrid">
+            <div class="fg"><label>Transfer countries<span class="opt">Optional</span></label><input type="text" name="transfer_countries" placeholder="e.g. USA, Switzerland"></div>
+            <div class="fg"><label>Legal basis</label><select name="legal_basis"><option value="">Select…</option><option value="consent">Consent (Art. 6(1)(a))</option><option value="contract">Contract (Art. 6(1)(b))</option><option value="legal_obligation">Legal Obligation (Art. 6(1)(c))</option><option value="legitimate_interests">Legitimate Interests (Art. 6(1)(f))</option></select></div>
+          </div>
+          <div class="fg"><label>Data categories (GDPR)<span class="opt">Optional</span></label><textarea name="data_categories" placeholder="e.g. contact info, financial, health"></textarea></div>
+          <div class="fg"><label>Processing purposes<span class="opt">Optional</span></label><textarea name="processing_purposes" placeholder="e.g. service delivery, marketing"></textarea></div>
+        </div>
+        <!-- HIPAA audit extras -->
+        <div class="hipaa-x">
+          <div class="sdiv">HIPAA Audit Specifics</div>
+          <div class="fgrid">
+            <div class="fg"><label>Covered entity type</label><select name="covered_entity_type"><option value="">Select…</option><option value="Health Plan">Health Plan</option><option value="Healthcare Provider">Healthcare Provider</option><option value="Healthcare Clearinghouse">Healthcare Clearinghouse</option><option value="Business Associate">Business Associate</option></select></div>
+            <div class="fg"><label><span class="req">*</span>PHI types handled</label><input type="text" name="phi_types" placeholder="e.g. medical records, lab results"></div>
+          </div>
+          <div class="fgrid">
+            <div class="fg"><label>Approximate patient volume<span class="opt">Optional</span></label><input type="number" name="patient_volume" placeholder="e.g. 500"></div>
+            <div class="fg"><label>Business associates<span class="opt">Optional</span></label><input type="text" name="business_associates" placeholder="e.g. Stripe, Epic, AWS"></div>
+          </div>
+        </div>
+        <!-- CCPA audit extras -->
+        <div class="ccpa-x">
+          <div class="sdiv">CCPA Audit Specifics</div>
+          <div class="fgrid">
+            <div class="fg"><label>Do you sell personal data?</label><select name="sell_data"><option value="">Select…</option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+            <div class="fg"><label>Primary service provider<span class="opt">Optional</span></label><input type="text" name="service_provider_name" placeholder="e.g. Stripe, Shopify"></div>
+          </div>
+        </div>
+        <div class="sdiv">Document Selection & Delivery</div>
+        <div class="fg"><label><span class="req">*</span>Which document do you need?</label><select name="docs"><option value="">Select document…</option><option value="Audit-Ready Documentation">Audit-Ready Documentation</option><option value="POPIA - Audit Documentation">POPIA Audit-Ready Documentation</option><option value="GDPR - Audit Documentation">GDPR Audit-Ready Documentation</option><option value="HIPAA - Audit Documentation">HIPAA Audit-Ready Documentation</option><option value="CCPA - Audit Documentation">CCPA Audit-Ready Documentation</option></select></div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <div class="fg"><label>Additional notes<span class="opt">Optional</span></label><textarea name="description" placeholder="Any specific audit context or requirements…"></textarea></div>
+      </div>
+      <!-- ═══ PANE: PAIA MANUAL ═══ -->
+      <div class="doc-pane" id="dpane-paia">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg><span><strong>PAIA Manual</strong> — Publicly required under POPIA for all South African companies. Must be published on your website.</span></div>
+        <div class="sdiv">Company & Officers</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. Acme Pty Ltd"></div>
+          <div class="fg"><label>Registration number<span class="opt">Optional</span></label><input type="text" name="company_registration" placeholder="e.g. 2020/123456/07"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Information Officer name</label><input type="text" name="information_officer" placeholder="Full legal name"></div>
+          <div class="fg"><label><span class="req">*</span>Information Officer email</label><input type="email" name="information_officer_email" placeholder="io@company.co.za"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Information Officer phone<span class="opt">Optional</span></label><input type="tel" name="information_officer_phone" placeholder="+27 11 000 0000"></div>
+          <div class="fg"><label>IO appointment date<span class="opt">Optional</span></label><input type="date" name="io_appointment_date" placeholder=""></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Deputy Information Officer<span class="opt">Optional</span></label><input type="text" name="deputy_information_officer" placeholder="Name (if any)"></div>
+          <div class="fg"><label>Deputy department<span class="opt">Optional</span></label><input type="text" name="deputy_information_officer_department" placeholder="e.g. Operations"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company address</label><input type="text" name="company_address" placeholder="Full address including postal code"></div>
+          <div class="fg"><label><span class="req">*</span>Contact email</label><input type="email" name="email" placeholder="info@company.co.za"></div>
+        </div>
+        <div class="sdiv">PAIA Status & Records</div>
+        <div class="fgrid">
+          <div class="fg"><label>PAIA Manual last updated<span class="opt">Optional</span></label><input type="date" name="paia_manual_last_update" placeholder=""></div>
+          <div class="fg"><label>Prior authorisation status</label><select name="prior_authorization"><option value="">Select…</option><option value="Not required">Not required</option><option value="Pending">Pending</option><option value="Approved">Approved</option><option value="Required — not yet obtained">Required — not yet obtained</option></select></div>
+        </div>
+        <div class="fg"><label>Documents already held</label><div class="cb-grid">
+          <label class="cb-item"><input type="checkbox" name="popia_docs[]" value="privacy_policy"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Privacy Policy</span></label>
+          <label class="cb-item"><input type="checkbox" name="popia_docs[]" value="dpa"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Data Processing Agreement</span></label>
+          <label class="cb-item"><input type="checkbox" name="popia_docs[]" value="incident_response"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Incident Response Plan</span></label>
+          <label class="cb-item"><input type="checkbox" name="popia_docs[]" value="retention_schedule"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Data Retention Schedule</span></label>
+        </div></div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="POPIA - PAIA Manual">
+      </div>
+      <!-- ═══ PANE: POPIA DATA RETENTION SCHEDULE ═══ -->
+      <div class="doc-pane" id="dpane-popia-retention">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span><strong>Data Retention Schedule</strong> — POPIA requires documented retention periods for each category of personal information you hold.</span></div>
+        <div class="sdiv">Company Details</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. Acme Pty Ltd"></div>
+          <div class="fg"><label><span class="req">*</span>Industry</label><select name="industry"><option value="">Select…</option><option value="SaaS / Technology">SaaS / Technology</option><option value="FinTech / Financial Services">FinTech / Financial Services</option><option value="E-Commerce / Retail">E-Commerce / Retail</option><option value="HealthTech / Healthcare">HealthTech / Healthcare</option><option value="EdTech / Education">EdTech / Education</option><option value="Legal Services">Legal Services</option><option value="Insurance">Insurance</option><option value="Real Estate">Real Estate</option><option value="Non-Profit">Non-Profit</option><option value="Other">Other</option></select></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Information Officer name</label><input type="text" name="information_officer" placeholder="Full name"></div>
+          <div class="fg"><label>Last retention review date<span class="opt">Optional</span></label><input type="date" name="last_retention_review" placeholder=""></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Next retention review date<span class="opt">Optional</span></label><input type="date" name="next_retention_review" placeholder=""></div>
+          <div class="fg"><label><span class="req">*</span>Authorised signatory</label><input type="text" name="authorized_signatory" placeholder="Person authorised to sign"></div>
+        </div>
+        <div class="fg"><label>Signatory position<span class="opt">Optional</span></label><input type="text" name="signatory_position" placeholder="e.g. CEO, Director"></div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="POPIA - Data Retention Schedule">
+      </div>
+      <!-- ═══ PANE: POPIA INCIDENT RESPONSE ═══ -->
+      <div class="doc-pane" id="dpane-popia-incident">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span><strong>Incident Response Procedure</strong> — POPIA Section 22 requires a documented breach response procedure and notification to the Information Regulator within a reasonable time.</span></div>
+        <div class="sdiv">Company & Response Team</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. Acme Pty Ltd"></div>
+          <div class="fg"><label><span class="req">*</span>Company address</label><input type="text" name="company_address" placeholder="Full address"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Information Officer name</label><input type="text" name="information_officer" placeholder="Full name"></div>
+          <div class="fg"><label><span class="req">*</span>Information Officer email</label><input type="email" name="information_officer_email" placeholder="io@company.co.za"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Information Officer phone<span class="opt">Optional</span></label><input type="tel" name="information_officer_phone" placeholder="+27 11 000 0000"></div>
+          <div class="fg"><label>Security Officer name<span class="opt">Optional</span></label><input type="text" name="security_officer" placeholder="Full name"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Security Officer email<span class="opt">Optional</span></label><input type="email" name="security_officer_email" placeholder="security@company.co.za"></div>
+          <div class="fg"><label>Security Officer phone<span class="opt">Optional</span></label><input type="tel" name="security_officer_phone" placeholder="+27 11 000 0000"></div>
+        </div>
+        <div class="sdiv">Incident Response Contacts</div>
+        <div class="fgrid">
+          <div class="fg"><label>IT Security contact<span class="opt">Optional</span></label><input type="text" name="it_security_contact" placeholder="Name / team"></div>
+          <div class="fg"><label>IT Security email<span class="opt">Optional</span></label><input type="email" name="it_security_email" placeholder="it@company.co.za"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Legal contact<span class="opt">Optional</span></label><input type="text" name="legal_contact" placeholder="Name / firm"></div>
+          <div class="fg"><label>Communications contact<span class="opt">Optional</span></label><input type="text" name="communications_contact" placeholder="Name / PR contact"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Last incident test date<span class="opt">Optional</span></label><input type="date" name="last_incident_test" placeholder=""></div>
+          <div class="fg"><label><span class="req">*</span>Authorised signatory</label><input type="text" name="authorized_signatory" placeholder="Person authorised to sign"></div>
+        </div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="POPIA - Incident Response">
+      </div>
+      <!-- ═══ PANE: POPIA PRIOR AUTHORISATION REGISTER ═══ -->
+      <div class="doc-pane" id="dpane-popia-priorauth">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span><strong>Prior Authorisation Register</strong> — Required under POPIA Sections 57–59. Processing certain special data requires approval from the Information Regulator before you begin.</span></div>
+        <div class="sdiv">Company Details</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. Acme Pty Ltd"></div>
+          <div class="fg"><label><span class="req">*</span>Information Officer name</label><input type="text" name="information_officer" placeholder="Full name"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Information Officer email</label><input type="email" name="information_officer_email" placeholder="io@company.co.za"></div>
+          <div class="fg"><label><span class="req">*</span>Authorised signatory</label><input type="text" name="authorized_signatory" placeholder="Person authorised to sign"></div>
+        </div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="POPIA - Prior Authorisation Register">
+      </div>
+      <!-- ═══ PANE: GDPR DPIA ═══ -->
+      <div class="doc-pane" id="dpane-gdpr-dpia">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><span><strong>DPIA (Data Protection Impact Assessment)</strong> — GDPR Article 35. Required before any high-risk processing activity begins.</span></div>
+        <div class="sdiv">Organisation</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. Acme Ltd"></div>
+          <div class="fg"><label><span class="req">*</span>DPO name</label><input type="text" name="dpo_name" placeholder="Data Protection Officer"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>DPO email</label><input type="email" name="email" placeholder="dpo@company.com"></div>
+          <div class="fg"><label>Privacy Officer<span class="opt">Optional</span></label><input type="text" name="privacy_officer" placeholder="Privacy contact"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Authorised signatory</label><input type="text" name="authorized_signatory" placeholder="Person authorised to sign"></div>
+          <div class="fg"><label>Trainer name<span class="opt">Optional</span></label><input type="text" name="trainer_name" placeholder="Training coordinator"></div>
+        </div>
+        <div class="sdiv">Processing Activity</div>
+        <div class="fg"><label><span class="req">*</span>Personal data processed</label><textarea name="data" placeholder="Describe all categories of personal data"></textarea></div>
+        <div class="fg"><label><span class="req">*</span>Processing purposes</label><textarea name="processing_purposes" placeholder="Why is this processing necessary?"></textarea></div>
+        <div class="fg"><label>Data subjects</label><div class="cb-grid">
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="customers"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Customers</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="employees"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Employees</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="patients"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Patients</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="children"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Children / minors</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="website_visitors"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Website visitors</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_subjects[]" value="other"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Other vulnerable groups</span></label>
+        </div></div>
+        <div class="fg"><label>Data categories</label><div class="cb-grid">
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="contact_info"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Contact information</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="financial"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Financial data</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="health"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Health data</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="biometric"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Biometric data</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="location"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Location data</span></label>
+          <label class="cb-item"><input type="checkbox" name="data_categories[]" value="online_identifiers"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Online identifiers</span></label>
+        </div></div>
+        <div class="fgrid">
+          <div class="fg"><label>International data transfers</label><select name="international_transfers"><option value="">Select…</option><option value="no">No international transfers</option><option value="within_eea">Within EEA only</option><option value="outside_eea">Outside EEA</option></select></div>
+          <div class="fg"><label>Transfer countries<span class="opt">Optional</span></label><input type="text" name="transfer_countries" placeholder="e.g. USA, Switzerland"></div>
+        </div>
+        <div class="fg"><label>Security measures<span class="opt">Optional</span></label><textarea name="security_measures" placeholder="e.g. encryption, pseudonymisation, access controls"></textarea></div>
+        <div class="fg"><label>Third-party processors<span class="opt">Optional</span></label><textarea name="thirdparty" placeholder="e.g. AWS, Stripe, Mailchimp"></textarea></div>
+        <div class="fg"><label>Primary service provider<span class="opt">Optional</span></label><input type="text" name="service_provider_name" placeholder="e.g. AWS, Google Cloud"></div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="GDPR - DPIA">
+      </div>
+      <!-- ═══ PANE: GDPR DSAR PROCEDURE ═══ -->
+      <div class="doc-pane" id="dpane-gdpr-dsar">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span><strong>DSAR Procedure</strong> — GDPR Articles 15–22. Your documented process for responding to Data Subject Access Requests within 30 days.</span></div>
+        <div class="sdiv">Key Contacts</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. Acme Ltd"></div>
+          <div class="fg"><label><span class="req">*</span>DPO name</label><input type="text" name="dpo_name" placeholder="Data Protection Officer"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>DPO email</label><input type="email" name="email" placeholder="dpo@company.com"></div>
+          <div class="fg"><label><span class="req">*</span>Privacy Officer</label><input type="text" name="privacy_officer" placeholder="Privacy contact"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Security Officer<span class="opt">Optional</span></label><input type="text" name="security_officer" placeholder="Security contact"></div>
+          <div class="fg"><label>Phone number<span class="opt">Optional</span></label><input type="tel" name="phone_number" placeholder="+44 20 0000 0000"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Authorised signatory</label><input type="text" name="authorized_signatory" placeholder="Person authorised to sign"></div>
+          <div class="fg"><label>Data retention period</label><select name="retention_period"><option value="">Select…</option><option value="1-3 years">1-3 years</option><option value="3-5 years">3-5 years</option><option value="5-7 years">5-7 years</option><option value="6 years (DSAR records)">6 years (DSAR records)</option></select></div>
+        </div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="GDPR - DSAR Procedure">
+      </div>
+      <!-- ═══ PANE: GDPR ROPA ═══ -->
+      <div class="doc-pane" id="dpane-gdpr-ropa">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span><strong>Records of Processing Activities (ROPA)</strong> — GDPR Article 30. Mandatory for most organisations — must be available to supervisory authorities on request.</span></div>
+        <div class="sdiv">Controller Information</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. Acme Ltd"></div>
+          <div class="fg"><label><span class="req">*</span>Company address</label><input type="text" name="company_address" placeholder="Full registered address"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Contact email</label><input type="email" name="email" placeholder="info@company.com"></div>
+          <div class="fg"><label>Phone number<span class="opt">Optional</span></label><input type="tel" name="phone_number" placeholder="+44 20 0000 0000"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Website URL<span class="opt">Optional</span></label><input type="url" name="website_url" placeholder="https://company.com"></div>
+          <div class="fg"><label><span class="req">*</span>DPO name</label><input type="text" name="dpo_name" placeholder="Data Protection Officer"></div>
+        </div>
+        <div class="sdiv">Processing Activities</div>
+        <div class="fg"><label><span class="req">*</span>Personal data processed</label><textarea name="data" placeholder="Describe all personal data categories"></textarea></div>
+        <div class="fg"><label><span class="req">*</span>Data subjects</label><textarea name="data_subjects" placeholder="e.g. customers, employees, website visitors"></textarea></div>
+        <div class="fg"><label><span class="req">*</span>Data categories</label><textarea name="data_categories" placeholder="e.g. contact info, financial, health"></textarea></div>
+        <div class="fg"><label><span class="req">*</span>Processing purposes</label><textarea name="processing_purposes" placeholder="e.g. service delivery, payroll, marketing"></textarea></div>
+        <div class="fgrid">
+          <div class="fg"><label>International transfers</label><select name="international_transfers"><option value="">Select…</option><option value="no">No international transfers</option><option value="within_eea">Within EEA only</option><option value="outside_eea">Outside EEA</option></select></div>
+          <div class="fg"><label>Transfer countries<span class="opt">Optional</span></label><input type="text" name="transfer_countries" placeholder="e.g. USA, Switzerland"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Retention period</label><select name="retention_period"><option value="">Select…</option><option value="1-3 years">1-3 years</option><option value="3-5 years">3-5 years</option><option value="5-7 years">5-7 years</option><option value="7+ years">7+ years</option></select></div>
+          <div class="fg"><label>Primary service provider<span class="opt">Optional</span></label><input type="text" name="service_provider_name" placeholder="e.g. AWS, Google"></div>
+        </div>
+        <div class="fg"><label><span class="req">*</span>Third-party processors</label><textarea name="thirdparty" placeholder="e.g. Google Analytics, Stripe, Mailchimp"></textarea></div>
+        <div class="fg"><label>Security measures<span class="opt">Optional</span></label><textarea name="security_measures" placeholder="e.g. encryption, access controls, backups"></textarea></div>
+        <div class="sdiv">Authorisation</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Authorised signatory</label><input type="text" name="authorized_signatory" placeholder="Person authorised to sign"></div>
+          <div class="fg"><label><span class="req">*</span>Signatory title</label><input type="text" name="signatory_title" placeholder="e.g. CEO, DPO"></div>
+        </div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="GDPR - ROPA">
+      </div>
+      <!-- ═══ PANE: CCPA CONSUMER REQUEST FORM ═══ -->
+      <div class="doc-pane" id="dpane-ccpa-requestform">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="11" y2="16"/></svg><span><strong>Consumer Request Intake Form</strong> — CCPA §1798.130. A print-ready intake form your team uses when a consumer exercises their rights. Your company name will appear in the footer.</span></div>
+        <div class="sdiv">Company Details</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. Acme LLC"></div>
+          <div class="fg"><label><span class="req">*</span>Privacy Officer name</label><input type="text" name="privacy_officer" placeholder="Person handling privacy requests"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Privacy Officer email</label><input type="email" name="email" placeholder="privacy@company.com"></div>
+          <div class="fg"><label>Toll-free phone <span class="opt">Optional</span></label><input type="tel" name="ccpa_tollfree" placeholder="1-800-XXX-XXXX"></div>
+        </div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="CCPA - Consumer Request Form">
+        <input type="hidden" name="company" value="N/A - Template">
+      </div>
+      <!-- ═══ PANE: CCPA CONSUMER REQUEST LOG ═══ -->
+      <div class="doc-pane" id="dpane-ccpa-requestlog">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span><strong>Consumer Request Log</strong> — CCPA §1798.130. 24-month tracking log of all consumer rights requests. Your company name and privacy officer populate the log header.</span></div>
+        <div class="sdiv">Company Details</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. Acme LLC"></div>
+          <div class="fg"><label><span class="req">*</span>Privacy Officer name</label><input type="text" name="privacy_officer" placeholder="Person maintaining the log"></div>
+        </div>
+        <div class="fg"><label>Contact email <span class="opt">Optional</span></label><input type="email" name="email" placeholder="privacy@company.com"></div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="CCPA - Request Log Template">
+      </div>
+      <!-- ═══ PANE: CCPA VENDOR ASSESSMENT CHECKLIST ═══ -->
+      <div class="doc-pane" id="dpane-ccpa-vendor">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><span><strong>Vendor Assessment Checklist</strong> — CCPA §1798.140(j)(1)(C). Annual vendor due diligence. Assessor and company details appear in the checklist header for audit trail purposes.</span></div>
+        <div class="sdiv">Company &amp; Assessor Details</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Your company name</label><input type="text" name="company" placeholder="e.g. Acme LLC"></div>
+          <div class="fg"><label><span class="req">*</span>Assessor name</label><input type="text" name="privacy_officer" placeholder="Person conducting the assessment"></div>
+        </div>
+        <div class="fg"><label>Assessor email <span class="opt">Optional</span></label><input type="email" name="email" placeholder="privacy@company.com"></div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="CCPA - Vendor Assessment">
+      </div>
+      <!-- ═══ PANE: CCPA DATA BREACH RESPONSE PLAN ═══ -->
+      <div class="doc-pane" id="dpane-ccpa-breach">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span><strong>Data Breach Response Plan</strong> — CCPA. Incident response plan with team contacts and notification timelines.</span></div>
+        <div class="sdiv">Company & Incident Response Team</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. Acme LLC"></div>
+          <div class="fg"><label><span class="req">*</span>Company address</label><input type="text" name="company_address" placeholder="Full address"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Privacy Officer</label><input type="text" name="privacy_officer" placeholder="Privacy contact"></div>
+          <div class="fg"><label><span class="req">*</span>Security Officer</label><input type="text" name="security_officer" placeholder="Security contact"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Security Officer email<span class="opt">Optional</span></label><input type="email" name="security_officer_email" placeholder="security@company.com"></div>
+          <div class="fg"><label>Security Officer phone<span class="opt">Optional</span></label><input type="tel" name="security_officer_phone" placeholder="1-800-XXX-XXXX"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Incident Commander<span class="opt">Optional</span></label><input type="text" name="incident_commander" placeholder="Name"></div>
+          <div class="fg"><label>Incident Commander email<span class="opt">Optional</span></label><input type="email" name="incident_commander_email" placeholder=""></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>IT Security lead<span class="opt">Optional</span></label><input type="text" name="it_security_lead" placeholder="Name"></div>
+          <div class="fg"><label>Legal Counsel<span class="opt">Optional</span></label><input type="text" name="legal_counsel" placeholder="Name / firm"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Outside Counsel<span class="opt">Optional</span></label><input type="text" name="outside_counsel" placeholder="External legal contact"></div>
+          <div class="fg"><label>Forensics firm<span class="opt">Optional</span></label><input type="text" name="forensics_firm" placeholder="Digital forensics contact"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Cyber insurance policy<span class="opt">Optional</span></label><input type="text" name="cyber_insurance" placeholder="Policy number"></div>
+          <div class="fg"><label>Credit monitoring service<span class="opt">Optional</span></label><input type="text" name="credit_monitoring" placeholder="Service provider"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Communications lead<span class="opt">Optional</span></label><input type="text" name="comms_lead" placeholder="PR / communications contact"></div>
+          <div class="fg"><label><span class="req">*</span>Authorised signatory</label><input type="text" name="authorized_signatory" placeholder="Person authorised to sign"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Signatory title</label><input type="text" name="signatory_title" placeholder="e.g. CEO, Privacy Officer"></div>
+          <div class="fg"><label>Plan version<span class="opt">Optional</span></label><input type="text" name="plan_version" placeholder="e.g. v1.0"></div>
+        </div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="CCPA - Breach Response Plan">
+      </div>
+      <!-- ═══ PANE: CCPA QUICK REFERENCE GUIDE ═══ -->
+      <div class="doc-pane" id="dpane-ccpa-quickref">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span><strong>CCPA Quick Reference Guide</strong> — At-a-glance staff card covering consumer rights, penalties, deadlines, and escalation. Your company name and privacy officer contact appear at the top of the card.</span></div>
+        <div class="sdiv">Company Details</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. Acme LLC"></div>
+          <div class="fg"><label><span class="req">*</span>Privacy Officer name</label><input type="text" name="privacy_officer" placeholder="Staff contact for privacy requests"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Privacy Officer email</label><input type="email" name="email" placeholder="privacy@company.com"></div>
+          <div class="fg"><label>Privacy Officer phone <span class="opt">Optional</span></label><input type="tel" name="phone_number" placeholder="1-800-XXX-XXXX"></div>
+        </div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="CCPA - Quick Reference Guide">
+      </div>
+      <!-- ═══ PANE: CCPA SERVICE PROVIDER AGREEMENT ═══ -->
+      <div class="doc-pane" id="dpane-ccpa-spa">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span><strong>CCPA Service Provider Agreement</strong> — Certifies that your service provider will not sell, share, or misuse personal information. Required for all CCPA-covered businesses.</span></div>
+        <div class="sdiv">Business (Your Company)</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. Acme LLC"></div>
+          <div class="fg"><label><span class="req">*</span>Company address</label><input type="text" name="company_address" placeholder="Full address"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Contact email</label><input type="email" name="email" placeholder="info@company.com"></div>
+          <div class="fg"><label>Phone number<span class="opt">Optional</span></label><input type="tel" name="phone_number" placeholder="1-800-XXX-XXXX"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Registration number<span class="opt">Optional</span></label><input type="text" name="company_registration" placeholder="State filing number"></div>
+          <div class="fg"><label>Privacy Officer<span class="opt">Optional</span></label><input type="text" name="privacy_officer" placeholder="Privacy contact"></div>
+        </div>
+        <div class="sdiv">Service Provider</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Service provider name</label><input type="text" name="service_provider_name" placeholder="Vendor / processor name"></div>
+          <div class="fg"><label>Service provider address<span class="opt">Optional</span></label><input type="text" name="service_provider_address" placeholder="Full address"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Service provider contact<span class="opt">Optional</span></label><input type="text" name="service_provider_contact" placeholder="Contact person"></div>
+          <div class="fg"><label><span class="req">*</span>Business purposes</label><textarea name="business_purposes" placeholder="What services they provide"></textarea></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Breach notification timeframe (hours)<span class="opt">Optional</span></label><input type="number" name="breach_notification_hours" placeholder="e.g. 72"></div>
+          <div class="fg"><label>SP response days<span class="opt">Optional</span></label><input type="number" name="sp_response_days" placeholder="Days to assist with consumer requests e.g. 10"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>CCPA toll-free number<span class="opt">Optional</span></label><input type="tel" name="ccpa_tollfree" placeholder="1-800-XXX-XXXX"></div>
+          <div class="fg"><label>Consumer request web form<span class="opt">Optional</span></label><input type="url" name="ccpa_webform_url" placeholder="https://yoursite.com/privacy-request"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Do you sell personal data?</label><select name="ccpa_sell"><option value="">Select…</option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+          <div class="fg"><label>Do you share for targeted ads?</label><select name="ccpa_share"><option value="">Select…</option><option value="Yes">Yes</option><option value="No">No</option></select></div>
+        </div>
+        <div class="sdiv">Signatories</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Authorised signatory</label><input type="text" name="authorized_signatory" placeholder="Person authorised to sign"></div>
+          <div class="fg"><label><span class="req">*</span>Signatory title</label><input type="text" name="signatory_title" placeholder="e.g. CEO"></div>
+        </div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="CCPA - Service Provider Agreement">
+      </div>
+      <!-- ═══ PANE: HIPAA BUSINESS ASSOCIATE AGREEMENT ═══ -->
+      <div class="doc-pane" id="dpane-hipaa-baa">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.64 19a19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 3.12 4.18 2 2 0 0 1 5.09 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 23 16.92z"/></svg><span><strong>Business Associate Agreement (BAA)</strong> — HIPAA §164.308(b). Required for every vendor who accesses Protected Health Information (PHI) on your behalf.</span></div>
+        <div class="sdiv">Covered Entity (Your Organisation)</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. City Health Clinic"></div>
+          <div class="fg"><label><span class="req">*</span>Company address</label><input type="text" name="company_address" placeholder="Full address"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Contact email</label><input type="email" name="email" placeholder="info@clinic.com"></div>
+          <div class="fg"><label>Phone number<span class="opt">Optional</span></label><input type="tel" name="phone_number" placeholder="+1 555 000 0000"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Covered entity type</label><select name="covered_entity_type"><option value="">Select…</option><option value="Health Plan">Health Plan</option><option value="Healthcare Provider">Healthcare Provider</option><option value="Healthcare Clearinghouse">Healthcare Clearinghouse</option><option value="Business Associate">Business Associate</option></select></div>
+          <div class="fg"><label><span class="req">*</span>PHI types handled</label><input type="text" name="phi_types" placeholder="e.g. medical records, lab results, diagnoses"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Privacy Officer</label><input type="text" name="privacy_officer" placeholder="Privacy Officer name"></div>
+          <div class="fg"><label><span class="req">*</span>Security Officer</label><input type="text" name="security_officer" placeholder="Security Officer name"></div>
+        </div>
+        <div class="sdiv">Business Associate (The Vendor)</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Business associate name</label><input type="text" name="service_provider_name" placeholder="Vendor company name"></div>
+          <div class="fg"><label>Business associates list<span class="opt">Optional</span></label><input type="text" name="business_associates" placeholder="Other BA vendors"></div>
+        </div>
+        <div class="fg"><label>Third-party tools accessing PHI<span class="opt">Optional</span></label><textarea name="thirdparty" placeholder="e.g. AWS, Epic, Salesforce Health"></textarea></div>
+        <div class="sdiv">Signatory</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Authorised signatory</label><input type="text" name="authorized_signatory" placeholder="Person authorised to sign"></div>
+          <div class="fg"><label><span class="req">*</span>Signatory title</label><input type="text" name="signatory_title" placeholder="e.g. CEO, HIPAA Privacy Officer"></div>
+        </div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="HIPAA - Business Associate Agreement">
+      </div>
+      <!-- ═══ PANE: HIPAA PATIENT AUTHORIZATION FORM ═══ -->
+      <div class="doc-pane" id="dpane-hipaa-auth">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg><span><strong>Patient Authorization Form</strong> — HIPAA 45 CFR §164.508. Required to disclose PHI for any purpose beyond treatment, payment, or healthcare operations.</span></div>
+        <div class="sdiv">Organisation Details</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. City Health Clinic"></div>
+          <div class="fg"><label><span class="req">*</span>Company address</label><input type="text" name="company_address" placeholder="Full address including ZIP"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Contact email</label><input type="email" name="email" placeholder="info@clinic.com"></div>
+          <div class="fg"><label><span class="req">*</span>Phone number</label><input type="tel" name="phone_number" placeholder="+1 555 000 0000"></div>
+        </div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="HIPAA - Authorization Form">
+      </div>
+      <!-- ═══ PANE: HIPAA BREACH NOTIFICATION POLICY ═══ -->
+      <div class="doc-pane" id="dpane-hipaa-breach">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span><strong>Breach Notification Policy</strong> — HIPAA 45 CFR §164.400–414. Governs your 60-day HHS notification timeline and affected-individual notification requirements.</span></div>
+        <div class="sdiv">Organisation</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. City Health Clinic"></div>
+          <div class="fg"><label><span class="req">*</span>Privacy Officer</label><input type="text" name="privacy_officer" placeholder="Privacy Officer name"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Security Officer</label><input type="text" name="security_officer" placeholder="Security Officer name"></div>
+          <div class="fg"><label><span class="req">*</span>Contact email</label><input type="email" name="email" placeholder="privacy@clinic.com"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Authorised signatory</label><input type="text" name="authorized_signatory" placeholder="Person authorised to sign"></div>
+          <div class="fg"><label><span class="req">*</span>Signatory title</label><input type="text" name="signatory_title" placeholder="e.g. CEO, Privacy Officer"></div>
+        </div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="HIPAA - Breach Notification Policy">
+      </div>
+      <!-- ═══ PANE: HIPAA SANCTION POLICY ═══ -->
+      <div class="doc-pane" id="dpane-hipaa-sanction">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span><strong>Sanction Policy</strong> — HIPAA §164.530(e). Documents disciplinary consequences for workforce members who violate HIPAA privacy and security policies.</span></div>
+        <div class="sdiv">Organisation</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. City Health Clinic"></div>
+          <div class="fg"><label><span class="req">*</span>Privacy Officer</label><input type="text" name="privacy_officer" placeholder="Privacy Officer name"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Security Officer</label><input type="text" name="security_officer" placeholder="Security Officer name"></div>
+          <div class="fg"><label><span class="req">*</span>Contact email</label><input type="email" name="email" placeholder="privacy@clinic.com"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Authorised signatory</label><input type="text" name="authorized_signatory" placeholder="Person authorised to sign"></div>
+          <div class="fg"><label><span class="req">*</span>Signatory title</label><input type="text" name="signatory_title" placeholder="e.g. CEO, Privacy Officer"></div>
+        </div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="HIPAA - Sanction Policy">
+      </div>
+      <!-- ═══ PANE: HIPAA RISK ASSESSMENT ═══ -->
+      <div class="doc-pane" id="dpane-hipaa-risk">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span><strong>Security Risk Assessment Template</strong> — HIPAA §164.308(a)(1)(ii)(A). A mandatory annual security evaluation covering all administrative, physical, and technical safeguards.</span></div>
+        <div class="sdiv">Organisation</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Company name</label><input type="text" name="company" placeholder="e.g. City Health Clinic"></div>
+          <div class="fg"><label><span class="req">*</span>Covered entity type</label><select name="covered_entity_type"><option value="">Select…</option><option value="Health Plan">Health Plan</option><option value="Healthcare Provider">Healthcare Provider</option><option value="Healthcare Clearinghouse">Healthcare Clearinghouse</option><option value="Business Associate">Business Associate</option></select></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Security Officer</label><input type="text" name="security_officer" placeholder="Security Officer name"></div>
+          <div class="fg"><label><span class="req">*</span>Privacy Officer</label><input type="text" name="privacy_officer" placeholder="Privacy Officer name"></div>
+        </div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="HIPAA - Risk Assessment">
+      </div>
+      <!-- ═══ PANE: COOKIE NOTICE ═══ -->
+      <div class="doc-pane" id="dpane-cookie">
+        <div class="astrip info"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg><span><strong>Cookie Notice / Consent Banner</strong> — Required for EU visitors (ePrivacy Directive) and CCPA 2026 cookie rules.</span></div>
+        <div class="sdiv">Business Details</div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Business name</label><input type="text" name="company" placeholder="e.g. Acme Pty Ltd"></div>
+          <div class="fg"><label><span class="req">*</span>Website URL</label><input type="url" name="website_url" placeholder="https://yoursite.co.za"></div>
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label><span class="req">*</span>Contact email</label><input type="email" name="email" placeholder="info@company.co.za"></div>
+          <div class="fg"><label>Primary regulation</label><select name="regulations_cookie"><option value="">Select…</option><option value="GDPR">GDPR / ePrivacy</option><option value="CCPA">CCPA 2026</option><option value="POPIA">POPIA</option><option value="Multiple / Global">Multiple / Global</option></select></div>
+        </div>
+        <div class="sdiv">Cookie Types Used</div>
+        <div class="fg"><label>Types of cookies your website uses</label><div class="cb-grid">
+          <label class="cb-item"><input type="checkbox" name="cookie_types[]" value="essential"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Essential / functional</span></label>
+          <label class="cb-item"><input type="checkbox" name="cookie_types[]" value="analytics"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Analytics (Google Analytics)</span></label>
+          <label class="cb-item"><input type="checkbox" name="cookie_types[]" value="marketing"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Marketing / advertising (Meta Pixel)</span></label>
+          <label class="cb-item"><input type="checkbox" name="cookie_types[]" value="social"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Social media plugins</span></label>
+          <label class="cb-item"><input type="checkbox" name="cookie_types[]" value="personalisation"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Personalisation</span></label>
+          <label class="cb-item"><input type="checkbox" name="cookie_types[]" value="other"><div class="cb-box"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span>Other tracking</span></label>
+        </div></div>
+        <div class="fg"><label>Third-party tracking tools used<span class="opt">Optional</span></label><textarea name="thirdparty" placeholder="e.g. Google Analytics, Meta Pixel, Hotjar"></textarea></div>
+        
+<div class="sdiv">Document Delivery</div>
+<div class="fg"><label><span class="req">*</span>Email address for document delivery</label><input type="email" name="delivery_email" placeholder="your@email.com"></div>
+<div class="fg"><label>Regulation update alerts?</label><select name="updates"><option value="">Select…</option><option value="Yes – notify me when regulations change">Yes — notify me</option><option value="No – one-time document only">No — one-time only</option></select></div>
+        <input type="hidden" name="docs" value="Cookie Notice / Consent Banner">
+      </div>
+      <!-- hidden submit triggered by JS -->
+      <button type="submit" id="real-submit" style="display:none"></button>
+    </form><!-- /ComplianceFormWebhook -->
+
+    <div class="step-nav" id="s3-nav">
+      <button class="btn-ghost" type="button" id="btn-s3-back">← Back</button>
+      <button class="btn" type="button" id="btn-s3">Review My Answers <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ════ STEP 4: REVIEW ════ -->
+  <div class="panel" id="panel4">
+    <div class="ptitle">Review Your Answers</div>
+    <div class="psub">Confirm everything looks correct. Your document is generated from these details.</div>
+    <div id="review-content"></div>
+    <div class="astrip ok"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Your data is processed securely and used only to generate your compliance document. We do not share or sell your information.</span></div>
+    <div class="step-nav">
+      <button class="btn-ghost" type="button" id="btn-s4-back">← Edit Answers</button>
+      <button class="btn" type="button" id="btn-s4">Confirm &amp; Generate <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ════ STEP 5: GENERATE ════ -->
+  <div class="panel" id="panel5">
+    <div class="gen-center" id="gen-loading">
+      <div class="gen-icon loading"><div class="spinner"></div></div>
+      <div class="gen-title">Generating Your Document…</div>
+      <div class="gen-sub">Mapping your answers against the actual regulation text and building your custom document.</div>
+      <div class="gen-steps" id="gen-steps"></div>
+    </div>
+    <div class="gen-center" id="gen-done" style="display:none">
+      <div class="gen-icon done"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="gen-title ok" id="gen-doc-title">Your Document is Ready</div>
+      <div class="gen-sub">Custom-made for your business, compliant with applicable laws.</div>
+      <div class="email-confirm" id="gen-email-line"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Sent to your inbox ✓</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:22px;">
+        <button class="btn" type="button" id="btn-another">Generate Another Document</button>
+        <a href="compliance_dashboard.html" class="btn-ghost">View Full Dashboard →</a>
+      </div>
+      <div class="upsell">
+        <h4>Don't let one document be the end of it.</h4>
+        <p>Regulations change. Your documents need to stay current. A 3CH0 subscription gives you unlimited regenerations, automatic update alerts, and every document your business needs.</p>
+        <div class="upsell-btns">
+          <a href="pricing.html" class="btn" style="font-size:13px;padding:10px 22px;">View Plans from R1 499/month</a>
+          <button class="btn-ghost" type="button" onclick="this.closest('.upsell').style.display='none'">Maybe later</button>
         </div>
       </div>
     </div>
   </div>
 
+</div><!-- /funnel -->
 
-  <script>
-    // Force reload to prevent caching
-    if (performance.navigation.type === 1) {
-      // Page was reloaded - clear any stuck cache
-      console.log('Forcing fresh load...');
+<footer>
+  &copy; 3CH0 Compliance Pty Ltd. All rights reserved. &nbsp;|&nbsp;
+  <a href="settings.html">Privacy &amp; Terms</a> &nbsp;|&nbsp;
+  <a href="mailto:3CH0.The.Only@gmail.com">Support</a> &nbsp;|&nbsp;
+  <a href="https://discord.gg/W5SrbqK7j3" target="_blank">Community</a>
+</footer>
+
+<div class="sec-badge">
+  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+  Secure
+</div>
+
+<script>
+/* ════ STATE ════ */
+var S = { country:'', type:'', customers:[], data:'', size:'', regs:[], doc:'privacy' };
+var curStep = 1;
+
+/* ════ SCROLL ════ */
+function sf() { setTimeout(function(){ document.getElementById('start').scrollIntoView({behavior:'smooth',block:'start'}); }, 60); }
+document.getElementById('hscb').addEventListener('click', function(e){ e.preventDefault(); sf(); });
+document.getElementById('hnc').addEventListener('click', function(e){ e.preventDefault(); sf(); });
+
+/* ════ STEP BAR ════ */
+function checkSVG(){ return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'; }
+
+function updateBar(n) {
+  for (var i = 1; i <= 5; i++) {
+    var c = document.getElementById('sc' + i);
+    var l = document.getElementById('sl' + i);
+    var ln = document.getElementById('ln' + i);
+    c.className = 'sc'; l.className = 'sl';
+    if (ln) ln.className = 'sline';
+    if (i < n) { c.className='sc done'; c.innerHTML=checkSVG(); if(ln) ln.className='sline done'; }
+    else if (i === n) { c.className='sc active'; c.textContent=i; l.className='sl active'; }
+    else { c.textContent = i; }
+  }
+}
+
+function showPanel(n) {
+  for (var i = 1; i <= 5; i++) { var p=document.getElementById('panel'+i); if(p) p.classList.remove('active'); }
+  var t = document.getElementById('panel' + n);
+  if (t) t.classList.add('active');
+  curStep = n;
+  updateBar(n);
+  sf();
+}
+
+/* ════ STEP 1 → 2 ════ */
+document.getElementById('btn-s1').addEventListener('click', function() {
+  S.country = document.getElementById('r-country').value;
+  S.type = document.getElementById('r-type').value;
+  S.data = document.getElementById('r-data').value;
+  S.size = document.getElementById('r-size').value;
+  S.customers = [];
+  if (document.getElementById('c-za').checked) S.customers.push('South Africa');
+  if (document.getElementById('c-eu').checked) S.customers.push('EU/UK');
+  if (document.getElementById('c-us').checked) S.customers.push('US');
+  if (document.getElementById('c-other').checked) S.customers.push('Other');
+  if (!S.country || !S.type || !S.data) { alert('Please answer all 5 questions to continue.'); return; }
+  buildRegGrid();
+  showPanel(2);
+});
+document.getElementById('btn-s2-back').addEventListener('click', function(){ showPanel(1); });
+
+/* ════ REGULATION GRID ════ */
+var RD = {
+  popia: { fn: function(s){ return s.country==='ZA' || s.customers.indexOf('South Africa')!==-1; } },
+  gdpr:  { fn: function(s){ return s.country==='EU' || s.country==='UK' || s.customers.indexOf('EU/UK')!==-1; } },
+  ccpa:  { fn: function(s){ return s.country==='US' || s.customers.indexOf('US')!==-1; } },
+  hipaa: { fn: function(s){ return s.type==='healthcare' && (s.country==='US' || s.customers.indexOf('US')!==-1); } }
+};
+
+function buildRegGrid() {
+  S.regs = [];
+  Object.keys(RD).forEach(function(k) {
+    var detected = RD[k].fn(S);
+    var card = document.getElementById('rc-' + k);
+    var badge = document.getElementById('rb-' + k);
+    if (detected) { card.classList.add('selected'); S.regs.push(k); badge.textContent='Applies to your business'; badge.className='reg-badge yes'; }
+    else { card.classList.remove('selected'); badge.textContent='Not detected — optional'; badge.className='reg-badge maybe'; }
+  });
+  document.getElementById('hid-regs').value = S.regs.map(function(r){ return r.toUpperCase(); }).join(', ');
+  var n = S.regs.length;
+  document.getElementById('reg-intro').textContent = n > 0
+    ? n + ' regulation' + (n>1?'s':' ') + ' detected for your business. You can also add others below.'
+    : 'No regulations were auto-detected. Select any that apply to your plans.';
+}
+
+['popia','gdpr','ccpa','hipaa'].forEach(function(k) {
+  document.getElementById('rc-' + k).addEventListener('click', function() {
+    var card = document.getElementById('rc-' + k);
+    var badge = document.getElementById('rb-' + k);
+    var idx = S.regs.indexOf(k);
+    if (idx === -1) {
+      S.regs.push(k); card.classList.add('selected');
+      badge.textContent = 'Selected'; badge.className = 'reg-badge yes';
+    } else {
+      S.regs.splice(idx, 1); card.classList.remove('selected');
+      badge.textContent = 'Not detected — optional'; badge.className = 'reg-badge maybe';
     }
+    document.getElementById('hid-regs').value = S.regs.map(function(r){ return r.toUpperCase(); }).join(', ');
+  });
+});
 
-    // Enhanced Security Script
-    (function() {
-      'use strict';
-      
-      // Security Configuration
-      const SECURITY_CONFIG = {
-        enableMonitoring: true,
-        logSecurityEvents: true
-      };
-      
-      // Initialize Security
-      document.addEventListener('DOMContentLoaded', function() {
-        console.log('NEW VERSION LOADED: Dark theme with glass panel');
-        
-        // Initialize security monitoring
-        if (SECURITY_CONFIG.enableMonitoring) {
-          initializeSecurityMonitoring();
-        }
-        
-        // Log page view for security monitoring
-        if (SECURITY_CONFIG.logSecurityEvents) {
-          logSecurityEvent('page_view', {
-            page: 'index',
-            timestamp: new Date().toISOString(),
-            userAgent: navigator.userAgent
-          });
-        }
-      });
-      
-      // Security Functions
-      function initializeSecurityMonitoring() {
-        // Monitor for suspicious activities
-        document.addEventListener('click', function(e) {
-          const target = e.target;
-          if (target.tagName === 'A' || target.tagName === 'BUTTON') {
-            logSecurityEvent('user_interaction', {
-              element: target.tagName,
-              text: target.textContent?.trim(),
-              href: target.href || 'N/A'
-            });
-          }
-        });
-      }
-      
-      function logSecurityEvent(eventType, details) {
-        if (!SECURITY_CONFIG.logSecurityEvents) return;
-        
-        const eventData = {
-          type: eventType,
-          timestamp: new Date().toISOString(),
-          url: window.location.href,
-          details: details
-        };
-        
-        console.log('Security Event:', eventData);
-      }
-      
-      // NEW: Enhanced Particle background animation with theme colors
-      const canvas = document.getElementById('particles');
-      const ctx = canvas.getContext('2d');
-      
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      
-      const particles = [];
-      const particleCount = Math.floor(window.innerWidth / 8);
-      
-      // Enhanced Particle class with theme colors
-      class Particle {
-        constructor() {
-          this.x = Math.random() * canvas.width;
-          this.y = Math.random() * canvas.height;
-          this.size = Math.random() * 4 + 1;
-          this.speedX = Math.random() * 1.5 - 0.75;
-          this.speedY = Math.random() * 1.5 - 0.75;
-          // Using your exact brand colors
-          const colors = [
-            'rgba(146, 205, 236, 0.7)',  // Primary accent #92cdec
-            'rgba(255, 255, 255, 0.5)',  // White
-            'rgba(0, 105, 217, 0.6)'     // Blue from gradient #0069d9
-          ];
-          this.color = colors[Math.floor(Math.random() * colors.length)];
-          this.opacity = Math.random() * 0.5 + 0.3;
-        }
-        
-        update() {
-          this.x += this.speedX;
-          this.y += this.speedY;
-          
-          // Bounce off edges
-          if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
-          if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
-        }
-        
-        draw() {
-          ctx.save();
-          ctx.globalAlpha = this.opacity;
-          ctx.fillStyle = this.color;
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fill();
-          
-          // Add glow for some particles
-          if (this.color === 'rgba(146, 205, 236, 0.7)') {
-            ctx.shadowBlur = 15;
-            ctx.shadowColor = this.color;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
-            ctx.fill();
-          }
-          ctx.restore();
-        }
-      }
-      
-      // Initialize particles
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-      }
-      
-      // Animation loop
-      function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Add subtle gradient overlay
-        const gradient = ctx.createRadialGradient(
-          canvas.width / 2, canvas.height / 2, 0,
-          canvas.width / 2, canvas.height / 2, canvas.width / 2
-        );
-        gradient.addColorStop(0, 'rgba(10, 10, 10, 0.1)');
-        gradient.addColorStop(1, 'rgba(10, 10, 10, 0.8)');
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        for (let particle of particles) {
-          particle.update();
-          particle.draw();
-        }
-        
-        requestAnimationFrame(animate);
-      }
-      
-      animate();
-      
-      // Resize handler
-      window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      });
+/* ════ STEP 2 → 3 ════ */
+document.getElementById('btn-s2').addEventListener('click', function() {
+  if (S.regs.length === 0) { alert('Please select at least one regulation to continue.'); return; }
+  buildDocTabs();
+  showPanel(3);
+});
+document.getElementById('btn-s3-back').addEventListener('click', function(){ showPanel(2); });
 
-      // Clear any cached versions
-      window.addEventListener('load', function() {
-        if (window.performance) {
-          const navEntries = performance.getEntriesByType('navigation');
-          if (navEntries.length > 0 && navEntries[0].type === 'reload') {
-            console.log('Cache cleared - fresh version loaded');
-          }
-        }
-      });
+/* ════ DOC TABS ════ */
+var ALL_TABS = [
+  // Universal
+  { key:'privacy',         label:'Privacy Policy',                   regs:['popia','gdpr','ccpa','hipaa','all'] },
+  { key:'dpa',             label:'Data Processing Agmt',             regs:['popia','gdpr','ccpa','all'] },
+  { key:'training',        label:'Employee Training',                regs:['popia','gdpr','ccpa','hipaa','all'] },
+  { key:'audit',           label:'Audit-Ready Docs',                 regs:['popia','gdpr','ccpa','hipaa','all'] },
+  // POPIA specific
+  { key:'paia',            label:'PAIA Manual',                      regs:['popia'] },
+  { key:'popia-retention', label:'Retention Schedule',               regs:['popia'] },
+  { key:'popia-incident',  label:'Incident Response',                regs:['popia'] },
+  { key:'popia-priorauth', label:'Prior Authorisation Register',     regs:['popia'] },
+  // GDPR specific
+  { key:'gdpr-dpia',       label:'DPIA (Art. 35)',                   regs:['gdpr'] },
+  { key:'gdpr-dsar',       label:'DSAR Procedure',                   regs:['gdpr'] },
+  { key:'gdpr-ropa',       label:'Records of Processing (ROPA)',     regs:['gdpr'] },
+  // CCPA specific
+  { key:'ccpa-requestform',label:'Consumer Request Form',            regs:['ccpa'] },
+  { key:'ccpa-requestlog', label:'Consumer Request Log',             regs:['ccpa'] },
+  { key:'ccpa-vendor',     label:'Vendor Assessment',                regs:['ccpa'] },
+  { key:'ccpa-breach',     label:'Breach Response Plan',             regs:['ccpa'] },
+  { key:'ccpa-quickref',   label:'Quick Reference Guide',            regs:['ccpa'] },
+  { key:'ccpa-spa',        label:'Service Provider Agmt',            regs:['ccpa'] },
+  // HIPAA specific
+  { key:'hipaa-baa',       label:'Business Associate Agmt',          regs:['hipaa'] },
+  { key:'hipaa-auth',      label:'Patient Authorization Form',       regs:['hipaa'] },
+  { key:'hipaa-breach',    label:'Breach Notification Policy',       regs:['hipaa'] },
+  { key:'hipaa-sanction',  label:'Sanction Policy',                  regs:['hipaa'] },
+  { key:'hipaa-risk',      label:'Risk Assessment',                  regs:['hipaa'] },
+  // Cookie
+  { key:'cookie',          label:'Cookie Notice',                    regs:['gdpr','ccpa','all'] }
+];
 
-    })();
-  </script>
+function buildDocTabs() {
+  /* Pass risk state to hidden fields */
+  document.getElementById('hid-country').value = S.country;
+  document.getElementById('hid-type').value = S.type;
+  document.getElementById('hid-customers').value = S.customers.join(', ');
+  document.getElementById('hid-data').value = S.data;
+  document.getElementById('hid-size').value = S.size;
+
+  /* Show/hide regulation-specific form sections */
+  var gdpr = S.regs.indexOf('gdpr') !== -1;
+  var popia = S.regs.indexOf('popia') !== -1;
+  var ccpa = S.regs.indexOf('ccpa') !== -1;
+  var hipaa = S.regs.indexOf('hipaa') !== -1;
+  document.querySelectorAll('.gdpr-x').forEach(function(el){ el.classList.toggle('show', gdpr); });
+  document.querySelectorAll('.popia-x').forEach(function(el){ el.classList.toggle('show', popia); });
+  document.querySelectorAll('.ccpa-x').forEach(function(el){ el.classList.toggle('show', ccpa); });
+  document.querySelectorAll('.hipaa-x').forEach(function(el){ el.classList.toggle('show', hipaa); });
+
+  /* Decide which tabs based on regs property */
+  var visible = ALL_TABS.filter(function(t){
+    if (t.regs.indexOf('all') !== -1) return true;
+    if (popia && t.regs.indexOf('popia') !== -1) return true;
+    if (gdpr  && t.regs.indexOf('gdpr')  !== -1) return true;
+    if (ccpa  && t.regs.indexOf('ccpa')  !== -1) return true;
+    if (hipaa && t.regs.indexOf('hipaa') !== -1) return true;
+    return false;
+  });
+  if (!visible.length) visible = [ALL_TABS[0]];
+
+  /* Build tab buttons */
+  var tabBar = document.getElementById('doc-tabs');
+  tabBar.innerHTML = '';
+  visible.forEach(function(tab, idx) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'doc-tab' + (idx === 0 ? ' active' : '');
+    btn.textContent = tab.label;
+    btn.setAttribute('data-key', tab.key);
+    btn.addEventListener('click', function() { switchDoc(tab.key); });
+    tabBar.appendChild(btn);
+  });
+  switchDoc(visible[0].key);
+}
+
+function switchDoc(key) {
+  S.doc = key;
+  document.getElementById('hid-doc').value = key;
+  document.querySelectorAll('.doc-tab').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-key')===key); });
+  document.querySelectorAll('.doc-pane').forEach(function(p){ p.classList.remove('active'); });
+  var pane = document.getElementById('dpane-' + key);
+  if (pane) pane.classList.add('active');
+}
+
+/* ════ STEP 3 → 4 ════ */
+document.getElementById('btn-s3').addEventListener('click', function() {
+  buildReview();
+  showPanel(4);
+});
+document.getElementById('btn-s4-back').addEventListener('click', function(){ showPanel(3); });
+
+/* ════ REVIEW ════ */
+var DOC_LABELS = {
+  'privacy':'Privacy Policy','dpa':'Data Processing Agreement','training':'Employee Training Script','audit':'Audit-Ready Documentation',
+  'paia':'PAIA Manual','popia-retention':'Data Retention Schedule','popia-incident':'Incident Response Procedure','popia-priorauth':'Prior Authorisation Register',
+  'gdpr-dpia':'DPIA (Data Protection Impact Assessment)','gdpr-dsar':'DSAR Procedure','gdpr-ropa':'Records of Processing Activities',
+  'ccpa-requestform':'Consumer Request Form','ccpa-requestlog':'Consumer Request Log','ccpa-vendor':'Vendor Assessment Checklist',
+  'ccpa-breach':'Data Breach Response Plan','ccpa-quickref':'Quick Reference Guide','ccpa-spa':'Service Provider Agreement',
+  'hipaa-baa':'Business Associate Agreement','hipaa-auth':'Patient Authorization Form','hipaa-breach':'Breach Notification Policy',
+  'hipaa-sanction':'Sanction Policy','hipaa-risk':'Risk Assessment Template','cookie':'Cookie Notice'
+};
+
+function buildReview() {
+  var html = '';
+  html += '<div class="rev-section"><div class="rev-head"><span>Risk Profile</span><button type="button" onclick="showPanel(1)">Edit</button></div><table class="rev-table">';
+  html += '<tr><td>Country</td><td>' + (S.country||'—') + '</td></tr>';
+  html += '<tr><td>Business type</td><td>' + (S.type||'—') + '</td></tr>';
+  html += '<tr><td>Customer markets</td><td>' + (S.customers.join(', ')||'—') + '</td></tr>';
+  html += '<tr><td>Regulations selected</td><td>' + (S.regs.length ? S.regs.map(function(r){return r.toUpperCase();}).join(', ') : 'None') + '</td></tr>';
+  html += '</table></div>';
+
+  html += '<div class="rev-section"><div class="rev-head"><span>Document: ' + (DOC_LABELS[S.doc]||S.doc) + '</span><button type="button" onclick="showPanel(3)">Edit</button></div><table class="rev-table">';
+  var activePane = document.querySelector('.doc-pane.active');
+  var fields = [
+    { sel:'[name="company"],[name="company_paia"],[name="company_dpa"],[name="company_cookie"]', label:'Company name' },
+    { sel:'[name="email"],[name="email_dpa"],[name="email_cookie"]', label:'Contact email' },
+    { sel:'[name="delivery_email"]', label:'Delivery email' },
+    { sel:'[name="website_url"],[name="website_url_cookie"]', label:'Website' },
+    { sel:'[name="regulations"],[name="regulations_dpa"],[name="regulations_cookie"]', label:'Primary regulation' }
+  ];
+  fields.forEach(function(f) {
+    var el = activePane ? activePane.querySelector(f.sel) : null;
+    var val = el && el.value ? el.value : '<em style="opacity:.5;color:var(--sec)">Not filled in</em>';
+    if (f.label === 'Delivery email' && el && el.value) val = '<span style="color:var(--accent)">' + el.value + '</span>';
+    html += '<tr><td>' + f.label + '</td><td>' + val + '</td></tr>';
+  });
+  html += '</table></div>';
+  document.getElementById('review-content').innerHTML = html;
+}
+
+/* ════ STEP 4 → 5 (SUBMIT) ════ */
+var GEN_STEPS = ['Identifying applicable regulations…','Mapping regulation clauses…','Personalising to your business…','Formatting legal language…','Triggering email delivery…'];
+
+document.getElementById('btn-s4').addEventListener('click', function() {
+  showPanel(5);
+  // Animate steps
+  var wrap = document.getElementById('gen-steps');
+  wrap.innerHTML = '';
+  var idx = 0;
+  var iv = setInterval(function() {
+    if (idx < GEN_STEPS.length) {
+      var s = document.createElement('span');
+      s.className = 'gen-step'; s.textContent = GEN_STEPS[idx];
+      wrap.appendChild(s); idx++;
+    } else { clearInterval(iv); }
+  }, 650);
+
+  // CSRF token
+  try { document.getElementById('csrf_token').value = Date.now().toString(36) + Math.random().toString(36).slice(2); } catch(e){}
+
+  // Get delivery email
+  var emailEl = document.querySelector('.doc-pane.active [name="delivery_email"]');
+  var emailVal = emailEl ? emailEl.value : '';
+
+  // Submit to Make via fetch — only active pane fields to avoid Supabase column conflicts
+  var form = document.getElementById('ComplianceFormWebhook');
+  var activePane = form.querySelector('.doc-pane.active');
+  var fd = new FormData();
+  // Hidden inputs at form root (csrf_token, risk_country, risk_type, etc.)
+  form.querySelectorAll(':scope > input[type="hidden"]').forEach(function(el) {
+    fd.append(el.name, el.value);
+  });
+  // All fields inside the active doc pane only
+  if (activePane) {
+    activePane.querySelectorAll('input, select, textarea').forEach(function(el) {
+      if (!el.name) return;
+      if (el.type === 'checkbox' || el.type === 'radio') {
+        if (el.checked) fd.append(el.name, el.value);
+      } else {
+        fd.append(el.name, el.value);
+      }
+    });
+  }
+  // Text/string columns: fill empty with 'N/A' so NOT NULL constraints pass.
+  // Number and date columns: leave empty — Make maps empty string to null which is fine
+  // as long as those columns allow null in Supabase (optional fields should be nullable).
+  var TEXT_NOT_NULL = [
+    'security_officer','security_officer_email','dpo_name','privacy_officer',
+    'authorized_signatory','signatory_title','signatory_position','trainer_name',
+    'information_officer','information_officer_email','information_officer_phone',
+    'deputy_information_officer','deputy_information_officer_email',
+    'deputy_information_officer_department','location','industry',
+    'company_address','company_registration','phone_number','website_url',
+    'data_categories','data_subjects','security_measures','processing_purposes',
+    'retention_period','thirdparty','service_provider_name','service_provider_address',
+    'legal_basis','automated_decisions','international_transfers','transfer_safeguards',
+    'transfer_countries','cross_border','recipient_countries','prior_authorization',
+    'covered_entity_type','phi_types','business_associates',
+    'ccpa_tollfree','ccpa_webform_url','ccpa_sell','ccpa_share',
+    'processing_nature','processing_duration','processing_purpose',
+    'approved_sub_operators','operator_email','service_provider_contact',
+    'it_security_contact','it_security_email','legal_contact','communications_contact',
+    'incident_commander','incident_commander_email','it_security_lead',
+    'legal_counsel','outside_counsel','forensics_firm','cyber_insurance',
+    'credit_monitoring','comms_lead','plan_version','updates','description',
+    'paia_manual','prior_auth_applications','sell_data','business_purposes',
+    'ccpa_categories','data_retention_period','transfer_mechanism',
+    'approved_transfer_countries','operator_address','operator_contact',
+    'operator_privacy_officer','processing_duration_dpa','security_certifications'
+  ];
+  // Number columns — send empty string (Make/Supabase treats as null, column must be nullable)
+  // ALL number-typed Supabase columns across every regulation/doc
+  var NUMBER_COLS = [
+    'breach_notification_hours','sp_response_days','patient_volume'
+  ];
+  // ALL date-typed Supabase columns across every regulation/doc
+  var DATE_COLS = [
+    'last_audit_date','last_training_date','last_retention_review',
+    'next_retention_review','last_incident_test',
+    'io_appointment_date','paia_manual_last_update'
+  ];
+
+  TEXT_NOT_NULL.forEach(function(col) {
+    if (!fd.has(col)) {
+      fd.append(col, 'N/A');
+    } else {
+      var val = fd.get(col);
+      if (val === null || val === undefined || val.toString().trim() === '') {
+        fd.set(col, 'N/A');
+      }
+    }
+  });
+  // For number/date cols: ensure they exist in fd but as empty string if blank
+  NUMBER_COLS.concat(DATE_COLS).forEach(function(col) {
+    if (!fd.has(col)) {
+      fd.append(col, '');
+    }
+  });
+  fetch(form.action, { method:'POST', body:fd }).catch(function(e){ console.warn('Webhook error:', e); });
+
+  // Show success after ~3.5s
+  setTimeout(function() {
+    clearInterval(iv);
+    document.getElementById('gen-loading').style.display = 'none';
+    document.getElementById('gen-done').style.display = 'block';
+    document.getElementById('gen-doc-title').textContent = 'Your ' + (DOC_LABELS[S.doc]||'Document') + ' is Ready';
+    var el = document.getElementById('gen-email-line');
+    el.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Sent to ' + (emailVal || 'your inbox') + ' \u2713';
+    try {
+      var g = JSON.parse(localStorage.getItem('3ch0_docs')||'{}');
+      g[S.doc] = {ts:Date.now(),email:emailVal};
+      localStorage.setItem('3ch0_docs', JSON.stringify(g));
+    } catch(e){}
+  }, 3600);
+});
+
+document.getElementById('btn-another').addEventListener('click', function() {
+  document.getElementById('gen-loading').style.display='block';
+  document.getElementById('gen-done').style.display='none';
+  S.doc = 'privacy';
+  showPanel(3);
+});
+
+/* ════ FREE PLAN USAGE TRACKER ════ */
+function getThisMonthCount() {
+  try {
+    var g = JSON.parse(localStorage.getItem('3ch0_docs') || '{}');
+    var now = new Date(); var m = now.getMonth(); var y = now.getFullYear();
+    var count = 0;
+    Object.values(g).forEach(function(v) {
+      if (!v || !v.ts) return;
+      var d = new Date(v.ts);
+      if (d.getMonth() === m && d.getFullYear() === y) count++;
+    });
+    return count;
+  } catch(e) { return 0; }
+}
+
+function updateFreePlanBar() {
+  var bar = document.getElementById('free-plan-bar');
+  if (!bar) return;
+  var count = getThisMonthCount();
+  var FREE_LIMIT = 1;
+  bar.classList.add('show');
+  var countEl = document.getElementById('free-bar-count');
+  var fillEl = document.getElementById('free-bar-fill');
+  var noteEl = document.getElementById('free-bar-note');
+  if (countEl) countEl.textContent = count + ' / ' + FREE_LIMIT + ' this month';
+  var pct = Math.min(count / FREE_LIMIT, 1) * 100;
+  if (fillEl) {
+    fillEl.style.width = pct + '%';
+    fillEl.className = 'free-bar-fill' + (count >= FREE_LIMIT ? ' free-bar-used' : '');
+  }
+  if (noteEl) {
+    if (count >= FREE_LIMIT) {
+      noteEl.innerHTML = '<strong style="color:var(--danger)">Free limit reached.</strong> <a href="pricing.html">Upgrade from R1 499/month</a> for unlimited documents.';
+    } else {
+      noteEl.innerHTML = (FREE_LIMIT - count) + ' free document remaining this month. <a href="pricing.html">Upgrade</a> to unlock unlimited access.';
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function(){ updateFreePlanBar(); });
+</script>
 </body>
 </html>
