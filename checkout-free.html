@@ -77,7 +77,7 @@
 
     nav {
       background: rgba(10, 10, 10, 0.98);
-      padding: 16px 40px;
+      padding: 18px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -106,15 +106,7 @@
     }
     nav a:hover::after { width: 100%; }
 
-    nav{background:rgba(10,10,10,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border-color, rgba(255,255,255,.1));padding:16px 40px;display:flex;justify-content:space-between;align-items:center;position:fixed;top:0;left:0;right:0;z-index:900}
-nav a{margin-left:22px;font-weight:500;color:var(--accent, #92cdec);text-decoration:none;font-size:14px;transition:color .25s;position:relative}
-nav a:hover{color:#fff}
-nav a.nav-active{color:#fff}
-nav a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gradient, linear-gradient(135deg,#ffffff,#92cdec,#0069d9));transition:width .3s}
-nav a:hover::after,nav a.nav-active::after{width:100%}
-.logo-img{height:52px;filter:brightness(115%)}
-.nav-cta{background:var(--gradient, linear-gradient(135deg,#ffffff,#92cdec,#0069d9))!important;color:#0a0a0a!important;padding:8px 20px;border-radius:30px;font-weight:700!important}
-.nav-cta::after{display:none!important}
+    .logo-img { height: 60px; filter: brightness(120%); }
     .container { max-width: 600px; margin: 60px auto; padding: 0 20px; text-align: center; }
 
     h1 {
@@ -219,23 +211,22 @@ nav a:hover::after,nav a.nav-active::after{width:100%}
 </head>
 <body>
   <div class="main-content">
-    <nav>
-  <div><img src="3CH0_logo_transparent_fixed.png" alt="3CH0" class="logo-img"></div>
-  <div style="display:flex;align-items:center;">
-    <a href="home.html">Home</a>
-    <a href="index.html">Dashboard</a>
-    <a href="pricing.html">Pricing</a>
-    <a href="settings.html">Settings</a>
-    <a href="index.html#start" class="nav-cta">Start Free Check</a>
-  </div>
-</nav>
+    <nav class="glass-panel">
+      <div><img src="3CH0_logo_transparent_fixed.png" alt="3CH0 Logo" class="logo-img"></div>
+      <div>
+        <a href="home.html">Home</a>
+        <a href="index.html">Dashboard</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="settings.html">Settings</a>
+      </div>
+    </nav>
 
     <div class="container">
       <div class="card glass-panel">
         <h1>Find Out Which Laws Apply to You</h1>
 
         <div class="price-display">
-          <div class="price-amount" id="converted-price">R0</div>
+          <div class="price-amount" id="converted-price">$0</div>
           <div id="price-period">forever</div>
         </div>
 
@@ -306,7 +297,7 @@ nav a:hover::after,nav a.nav-active::after{width:100%}
       if (['userCurrency', 'userCountry', 'currencySymbol'].includes(e.key)) updateFreePrice();
     });
     // ─────────────────────────────────────────────────────────────────────
-
+ 
     document.addEventListener('DOMContentLoaded', () => {
       updateFreePrice(); // re-run after DOM ready in case localStorage loaded late
       const activateBtn = document.getElementById('activate-btn');
@@ -315,10 +306,10 @@ nav a:hover::after,nav a.nav-active::after{width:100%}
         activateBtn.textContent = 'Activating...';
         activateBtn.style.opacity = '0.7';
         activateBtn.classList.add('loading');
-
+ 
         // Simulate activation process
         await new Promise(res => setTimeout(res, 1500));
-
+ 
        
         // Redirect to form section on home page
         window.location.href = "home.html#form-container";
