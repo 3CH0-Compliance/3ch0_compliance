@@ -1972,6 +1972,11 @@ footer a{color:#556070;text-decoration:underline;margin:0 8px}
       </div>
     </div>
 
+    <div id="fg-auto-desc" style="display:none;">
+      <label for="automated_processing_description">Describe Your Automated Decision-Making (S.71)</label>
+      <textarea id="automated_processing_description" name="automated_processing_description" rows="3" placeholder="e.g. We use credit scoring algorithms to assess applications. Decisions may affect approval or terms. Data subjects may request human review at any time."></textarea>
+    </div>
+
     <div class="form-grid">
       <div>
         <label for="directory_listing">Directory Listing? (S.70)</label>
@@ -2022,19 +2027,6 @@ footer a{color:#556070;text-decoration:underline;margin:0 8px}
     <label for="training_version">Training Materials Version</label>
     <input type="text" id="training_version" name="training_version" placeholder="e.g., 2024.1">
 
-    <!-- Documents Needed -->
-    <label><strong>POPIA Documents Needed</strong></label>
-    <div class="checkbox-grid">
-      <label><input type="checkbox" name="popia_docs[]" value="PAIA Manual"> PAIA Manual</label>
-      <label><input type="checkbox" name="popia_docs[]" value="POPIA Privacy Policy"> Privacy Policy</label>
-      <label><input type="checkbox" name="popia_docs[]" value="Information Officer Appointment"> IO Appointment</label>
-      <label><input type="checkbox" name="popia_docs[]" value="POPIA Training"> Training</label>
-      <label><input type="checkbox" name="popia_docs[]" value="Data Processing Agreement"> DPA (Operator)</label>
-      <label><input type="checkbox" name="popia_docs[]" value="Audit Documentation"> Audit Docs</label>
-      <label><input type="checkbox" name="popia_docs[]" value="Data Retention Schedule"> Retention Schedule</label>
-      <label><input type="checkbox" name="popia_docs[]" value="Incident Response Procedure"> Incident Response</label>
-      <label><input type="checkbox" name="popia_docs[]" value="Prior Authorisation Register"> PA Register</label>
-    </div>
   </div>
   <!-- ==================== POPIA ADVANCED: OPERATOR DPA DETAILS ==================== -->
   <div class="field-group popia-specific" style="display: none;">
@@ -2752,10 +2744,14 @@ footer a{color:#556070;text-decoration:underline;margin:0 8px}
       </optgroup>
       
       <optgroup label="── POPIA Specific ──">
-        <option value="POPIA - PAIA Manual">PAIA Manual (Mandatory)</option>
-        <option value="POPIA - Data Retention Schedule">Data Retention Schedule</option>
-        <option value="POPIA - Incident Response">Incident Response Procedure</option>
-        <option value="POPIA - Prior Authorisation Register">Prior Authorisation Register</option>
+        <option value="POPIA - PAIA Manual">PAIA Manual</option>
+        <option value="POPIA - Impact Assessment">POPIA Impact Assessment </option>
+        <option value="POPIA - Consent Form">Consent Form </option>
+        <option value="POPIA - IO Appointment">Information Officer Appointment Letter </option>
+        <option value="POPIA - Data Subject Rights Procedure">Data Subject Rights Procedure </option>
+        <option value="POPIA - Data Retention Schedule">Data Retention Schedule </option>
+        <option value="POPIA - Incident Response">Incident Response Procedure </option>
+        <option value="POPIA - Prior Authorisation Register">Prior Authorisation Register </option>
       </optgroup>
 
     </select>
@@ -2912,6 +2908,19 @@ if(el_btn_s1) el_btn_s1.addEventListener('click',function(){
 });
 var el_btn_s2_back = document.getElementById('btn-s2-back');
 if(el_btn_s2_back) el_btn_s2_back.addEventListener('click',function(){ showPanel(1); });
+
+/* ════ AUTO-DECISION DESCRIPTION TOGGLE ════ */
+(function(){
+  var autoEl = document.getElementById('automated_decisions_popia');
+  var descEl = document.getElementById('fg-auto-desc');
+  if(autoEl && descEl){
+    function toggleAutoDesc(){
+      descEl.style.display = autoEl.value === 'Yes' ? 'block' : 'none';
+    }
+    autoEl.addEventListener('change', toggleAutoDesc);
+    toggleAutoDesc();
+  }
+})();
 
 /* ════ REGULATION GRID ════ */
 var RD = {
@@ -3227,7 +3236,7 @@ if(el_btn_another) el_btn_another.addEventListener('click', function(){
     // TESTING MODE TOGGLE
     // ======================
     // Set to true for unlimited testing, false for production
-    const TESTING_MODE = True;  // ← CHANGE TO false BEFORE GOING LIVE!
+    const TESTING_MODE = true;  // ← CHANGE TO false BEFORE GOING LIVE!
 
     // ======================
     // COLLAPSIBLE SECTIONS HANDLER (NEW)
